@@ -1,0 +1,40 @@
+# Rutas relativas a ml-service/, que es la raiz de este repositorio.
+
+# --- Secretos ---
+.env
+.env.local
+
+# --- Documentacion ---
+*.md
+
+# --- Entorno virtual: 372 MB que se regeneran con pip install ---
+venv/
+.venv/
+
+# --- Pruebas: se quedan en local ---
+tests/
+pytest.ini
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# --- Modelos entrenados ---
+# Son artefactos binarios que se regeneran con `python -m bookmind_ml.train`.
+# Ademas evita que el modelo de prueba (datos sinteticos) acabe en el repo
+# pareciendo el real.
+models/*.joblib
+
+# Las metricas SI se versionan: son la evidencia de la seccion 4.5 y hay que
+# poder rastrear que numeros se reportaron y cuando.
+!models/metricas.json
+
+# --- Editor / SO ---
+.vscode/*
+!.vscode/extensions.json
+.idea/
+Thumbs.db
+Desktop.ini

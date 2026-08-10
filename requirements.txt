@@ -1,0 +1,22 @@
+# BookMind AI — pieza 3: Enrutador Inteligente de Documentos
+# Verificado con Python 3.14 en Windows (wheels cp314-win_amd64 disponibles).
+
+fastapi>=0.121.0
+uvicorn[standard]>=0.42.0
+pydantic>=2.13.0
+
+scikit-learn>=1.9.0
+numpy>=2.5.0
+scipy>=1.18.0
+joblib>=1.5.0
+
+# Solo para el reporte de evaluacion (matriz de confusion)
+matplotlib>=3.11.0
+
+# Helper para armar el corpus semilla desde los PDF del CNB.
+# No participa en el runtime del servicio.
+pypdf>=6.1.0
+
+# Tests
+pytest>=8.4.0
+httpx>=0.28.0
