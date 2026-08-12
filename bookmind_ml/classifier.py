@@ -1,12 +1,4 @@
-"""Pieza 3 — clasificador de materia (seccion 4).
-
-    texto ─┬─> TfidfVectorizer ──────────────┐
-           └─> FeaturesNumericas -> Scaler ──┴─> LogisticRegression -> materia
-
-LogisticRegression y no RandomForest porque sus coeficientes son
-interpretables por clase, que es lo que alimenta `featureImportance`.
-El nivel no se predice aqui: sale de `readability.py`.
-"""
+"""Pieza 3: TF-IDF + features numericas -> LogisticRegression -> materia."""
 
 from __future__ import annotations
 
@@ -31,8 +23,7 @@ RUTA_MODELOS = Path(__file__).resolve().parent.parent / "models"
 RUTA_MODELO = RUTA_MODELOS / "clasificador_materia.joblib"
 RUTA_METRICAS = RUTA_MODELOS / "metricas.json"
 
-# Umbral por debajo del cual no se fuerza una clase (seccion 1, nota de
-# primaria: "No forzar una clase con confianza baja").
+# Umbral por debajo del cual no se fuerza una clase.
 UMBRAL_CONFIANZA = 0.45
 
 
@@ -47,15 +38,11 @@ class ResultadoClasificacion:
     probabilidades: dict[str, float]
     legibilidad: dict[str, float | str | int]
     baja_confianza: bool
-    # Clase a la que se refiere `featureImportance`. Normalmente es igual a
-    # `materia`, pero cuando la confianza es baja `materia` se degrada a "otro"
-    # y la explicacion sigue describiendo al candidato descartado. Sin este
-    # campo la UI mostraria "materia: otro" junto a razones de "matematicas".
+    # Clase que describe `featureImportance`; con baja confianza `materia` es "otro".
     materia_explicada: str
 
 
-# A nivel de modulo, no lambdas: pickle resuelve funciones por nombre y una
-# lambda local rompe el guardado del modelo con PicklingError.
+# Funciones de modulo y no lambdas: pickle las resuelve por nombre.
 
 def _aplanar(X):
     """Convierte la columna (n, 1) en la secuencia 1-D que espera TfidfVectorizer."""
@@ -63,20 +50,12 @@ def _aplanar(X):
 
 
 def _recortar(M):
-    """Acota cada feature escalada a +/-5 sigma. Ver nota en `construir_pipeline`."""
+    """Acota cada feature escalada a +/-5 sigma."""
     return np.clip(M, -5.0, 5.0)
 
 
 def construir_pipeline(min_df: int = 2) -> Pipeline:
-    """Arma el pipeline sin entrenar.
-
-    `ColumnTransformer` sobre una lista de textos: ambas ramas reciben el mismo
-    texto crudo. Se usa `FunctionTransformer` para aplanar la columna, porque
-    `TfidfVectorizer` espera una secuencia 1-D de strings y no una matriz.
-
-    `min_df` es parametro para que quien entrena lo decida una sola vez: si
-    difiere entre evaluacion y despliegue, las metricas describen otro modelo.
-    """
+    """Arma el pipeline sin entrenar: ambas ramas reciben el mismo texto crudo."""
     aplanar = FunctionTransformer(
         _aplanar,
         validate=False,
@@ -101,16 +80,13 @@ def construir_pipeline(min_df: int = 2) -> Pipeline:
         ("aplanar", aplanar),
         ("features", FeaturesNumericas()),
         ("escalar", StandardScaler()),
-        # Acota cuanto puede pesar una feature fuera de distribucion sin
-        # borrar la senal de las demas.
+        # Limita cuanto puede pesar una feature fuera de distribucion.
         ("recortar", FunctionTransformer(
             _recortar,
             validate=False,
             feature_names_out="one-to-one",
         )),
-        # TfidfVectorizer entrega cada fila con norma 1; sin normalizar aqui, el
-        # bloque numerico llega a norma 19 y 14 features estructurales le ganan
-        # a 882 lexicas. Con ambos a norma 1 pesan lo mismo.
+        # A norma 1, igual que TF-IDF, para que ambos bloques pesen lo mismo.
         ("normalizar", Normalizer()),
     ])
 
@@ -161,10 +137,7 @@ class ClasificadorMateria:
 
     @property
     def es_demo(self) -> bool:
-        """True si el modelo se entreno con datos sinteticos.
-
-        El flag viaja en el .joblib y se expone en /health y /classify.
-        """
+        """True si el modelo se entreno con datos sinteticos."""
         return self._es_demo
 
     def cargar(self) -> bool:
@@ -220,7 +193,7 @@ class ClasificadorMateria:
         confianza = float(probabilidades[indice_ganador])
         materia = str(clases[indice_ganador])
 
-        # Regla de la seccion 1: con poca confianza no se fuerza una clase.
+        # Con poca confianza no se fuerza una clase.
         baja_confianza = confianza < UMBRAL_CONFIANZA
         if baja_confianza:
             materia = "otro"
@@ -244,11 +217,7 @@ class ClasificadorMateria:
     def _explicar(
         self, entrada: np.ndarray, indice_clase: int, top_n: int
     ) -> list[dict[str, float | str]]:
-        """Top-N features que mas empujaron hacia la clase ganadora.
-
-        Contribucion = valor x coeficiente: la descomposicion exacta del
-        logit, no una aproximacion.
-        """
+        """Top-N features que mas empujaron hacia la clase ganadora."""
         assert self._pipeline is not None and self._nombres is not None
 
         combinador: ColumnTransformer = self._pipeline.named_steps["features"]

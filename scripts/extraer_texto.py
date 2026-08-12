@@ -1,9 +1,4 @@
-"""Extrae texto de un PDF para armar el corpus semilla.
-
-    python scripts/extraer_texto.py libro.pdf seed_data/textos/cnb_mate_3ro.txt
-
-Avisa si el PDF rinde poco texto por pagina: esta escaneado y necesita OCR.
-"""
+"""Extrae el texto de un PDF para armar el corpus semilla."""
 
 from __future__ import annotations
 

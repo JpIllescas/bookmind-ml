@@ -1,8 +1,4 @@
-"""Corpus SINTETICO: plantillas a mano, trivialmente separables.
-
-Sirve para los tests y para el modelo de juguete de `scripts/entrenar_demo.py`.
-NO para reportar metricas; el corpus real va en `seed_data/`.
-"""
+"""Corpus sintetico para tests y demos; el corpus real va en `seed_data/`."""
 
 from __future__ import annotations
 

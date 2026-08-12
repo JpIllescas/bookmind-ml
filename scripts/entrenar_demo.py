@@ -1,12 +1,4 @@
-"""Entrena un modelo DE JUGUETE con textos sinteticos, para probar el flujo.
-
-    python scripts/entrenar_demo.py
-
-NO sirve para reportar metricas. Tres salvaguardas lo marcan: `es_demo=True`
-en el .joblib, el aviso en /health y /classify, y no escribir metricas.json.
-
-Para el modelo real: python -m bookmind_ml.train (con el corpus en seed_data/).
-"""
+"""Entrena un modelo de juguete con textos sinteticos, solo para probar el flujo."""
 
 from __future__ import annotations
 
@@ -32,8 +24,7 @@ def main() -> int:
     print("  MODELO DE PRUEBA — datos sinteticos, NO usar para metricas")
     print("=" * 68)
 
-    # Si hay metricas.json ya hubo entrenamiento real: pisarlo dejaria
-    # numeros reales describiendo un modelo de juguete.
+    # Si hay metricas.json ya hubo entrenamiento real y no se debe pisar.
     if RUTA_METRICAS.exists() and "--force" not in sys.argv:
         print(
             f"\n  ABORTADO: existe {RUTA_METRICAS.name}, o sea que ya se entreno\n"

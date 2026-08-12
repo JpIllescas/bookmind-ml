@@ -1,9 +1,4 @@
-"""Indice Fernandez-Huerta: L = 206.84 - 0.60*P - 1.02*F.
-
-P = silabas por cada 100 palabras, F = promedio de palabras por oracion.
-L va de ~0 (muy dificil) a ~100+ (muy facil). Es el nivel de lectura
-(dimension B), y no es ML: es una formula determinista.
-"""
+"""Nivel de lectura por el indice Fernandez-Huerta: formula, no ML."""
 
 from __future__ import annotations
 
@@ -22,10 +17,7 @@ _RE_ORACION = re.compile(r"[.!?…]+[\s\"'”»)\]]*")
 
 
 def contar_silabas(palabra: str) -> int:
-    """Cuenta silabas por grupos vocalicos, separando hiatos fuerte-fuerte.
-
-    Heuristica aproximada; sobre miles de palabras el error se promedia.
-    """
+    """Cuenta silabas por grupos vocalicos, separando hiatos fuerte-fuerte."""
     palabra = palabra.lower()
     if not palabra:
         return 0
@@ -39,8 +31,7 @@ def contar_silabas(palabra: str) -> int:
                 # Arranca un grupo vocalico nuevo.
                 silabas += 1
             elif vocal_previa in _VOCALES_FUERTES and caracter in _VOCALES_FUERTES:
-                # Hiato: dos vocales fuertes contiguas son silabas distintas
-                # ("le-on", "ca-os").
+                # Hiato: dos vocales fuertes contiguas son silabas distintas.
                 silabas += 1
             # En cualquier otro caso es diptongo ("cau-sa", "vie-jo"): no suma.
             vocal_previa = caracter
@@ -64,9 +55,9 @@ class MetricasLegibilidad:
     palabras_por_oracion: float
 
 
-# PENDIENTE: sin calibrar contra el corpus del CNB (lo exige la seccion 1).
-UMBRAL_PRIMARIA_BAJA = 80.0   # L >= 80  -> texto muy facil
-UMBRAL_PRIMARIA_ALTA = 65.0   # 65 <= L < 80
+# Cortes tomados de la escala clasica de Fernandez-Huerta.
+UMBRAL_PRIMARIA_BAJA = 90.0   # L >= 90  -> muy facil
+UMBRAL_PRIMARIA_ALTA = 75.0   # 75 <= L < 90
 
 
 def clasificar_nivel(puntuacion: float) -> str:

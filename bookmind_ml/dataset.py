@@ -1,10 +1,4 @@
-"""Carga del dataset semilla desde `seed_data/` (seccion 4.4, paso 1).
-
-Estructura: `manifiesto.csv` (archivo,materia,grado,fuente) + `textos/*.txt`.
-
-No genera texto sintetico: sin corpus real el entrenamiento falla con un
-mensaje claro, para que las metricas reportadas signifiquen algo.
-"""
+"""Carga del corpus real desde `seed_data/`: manifiesto.csv + textos/*.txt."""
 
 from __future__ import annotations
 

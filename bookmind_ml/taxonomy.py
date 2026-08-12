@@ -1,12 +1,8 @@
-"""Taxonomia del clasificador: areas del CNB de Guatemala (seccion 1).
-
-Fuente unica de verdad: el backend guarda estos strings como enums de
-Postgres, asi que cambiarlos exige una migracion.
-"""
+"""Taxonomia del clasificador; el backend guarda estos strings como enums."""
 
 from __future__ import annotations
 
-# --- Dimension A: materia (esto SI es un modelo entrenado) ---
+# --- Dimension A: materia (la predice el modelo) ---
 MATERIAS: tuple[str, ...] = (
     "matematicas",
     "ciencias_naturales",
@@ -23,7 +19,7 @@ NIVELES: tuple[str, ...] = (
     "basicos",
 )
 
-# Nombres legibles para la UI y para el system prompt de la pieza 1.
+# Nombres legibles para la UI y el system prompt.
 MATERIA_LEGIBLE: dict[str, str] = {
     "matematicas": "Matemáticas",
     "ciencias_naturales": "Ciencias Naturales",
@@ -39,7 +35,7 @@ NIVEL_LEGIBLE: dict[str, str] = {
     "basicos": "Ciclo básico",
 }
 
-# Alimenta la feature de frecuencia lexica por clase (seccion 4.1).
+# Alimenta la feature de frecuencia lexica por clase.
 LEXICO_POR_MATERIA: dict[str, tuple[str, ...]] = {
     "matematicas": (
         "número", "numero", "ecuación", "ecuacion", "suma", "resta",

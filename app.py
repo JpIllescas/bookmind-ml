@@ -1,9 +1,4 @@
-"""Microservicio de clasificacion — FastAPI (seccion 4.3).
-
-    uvicorn app:app --reload --port 8000
-
-Sin autenticacion: se asume alcanzable solo por el backend en la red local.
-"""
+"""Microservicio de clasificacion; solo lo alcanza el backend en la red local."""
 
 from __future__ import annotations
 
@@ -75,8 +70,7 @@ class RespuestaClasificar(BaseModel):
     featureImportance: list[dict[str, Any]]
     probabilidades: dict[str, float]
     legibilidad: dict[str, Any]
-    # Clase a la que se refiere featureImportance. Difiere de `materia` cuando
-    # la confianza es baja y la etiqueta se degrada a "otro".
+    # Clase que describe featureImportance; con baja confianza `materia` es "otro".
     materiaExplicada: str
     # True si el modelo se entreno con datos sinteticos de prueba.
     modeloDemo: bool
@@ -182,7 +176,7 @@ def train() -> dict[str, Any]:
 
 @app.get("/metrics")
 def metrics() -> dict[str, Any]:
-    """Ultimas metricas persistidas (evidencia de la seccion 4.5)."""
+    """Ultimas metricas persistidas del entrenamiento."""
     if not RUTA_METRICAS.exists():
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

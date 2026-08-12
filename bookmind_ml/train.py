@@ -1,10 +1,4 @@
-"""Entrenamiento y evaluacion del clasificador (secciones 4.2 y 4.5).
-
-    python -m bookmind_ml.train
-
-Produce `models/clasificador_materia.joblib` y `models/metricas.json` con
-accuracy, precision/recall por clase, matriz de confusion y baseline.
-"""
+"""Entrenamiento del clasificador: produce el .joblib y metricas.json."""
 
 from __future__ import annotations
 
@@ -48,12 +42,7 @@ class ResultadoEntrenamiento:
 
 
 def _elegir_min_df(n_documentos: int) -> int:
-    """Decide `min_df` una sola vez, a partir del corpus completo.
-
-    Con corpus chico `min_df=2` puede vaciar el vocabulario TF-IDF entero, y
-    usar valores distintos en evaluacion y despliegue da metricas de un modelo
-    que no es el que se sirve.
-    """
+    """Elige `min_df`: con corpus chico un 2 puede vaciar el vocabulario TF-IDF."""
     if n_documentos < 20:
         print(
             f"[train] Corpus de {n_documentos} documentos: min_df=1 "
@@ -99,7 +88,7 @@ def entrenar(ejemplos: list[EjemploEntrenamiento]) -> tuple[Pipeline, ResultadoE
         stratify=y if puede_estratificar else None,
     )
 
-    # Un solo valor para los tres pipelines de aqui abajo. Ver `_elegir_min_df`.
+    # Un solo valor para los tres pipelines de aqui abajo.
     min_df = _elegir_min_df(len(X))
 
     pipeline = construir_pipeline(min_df=min_df)
@@ -107,7 +96,7 @@ def entrenar(ejemplos: list[EjemploEntrenamiento]) -> tuple[Pipeline, ResultadoE
 
     y_pred = pipeline.predict(X_test)
 
-    # --- Baseline obligatorio: predecir siempre la clase mayoritaria ---
+    # --- Baseline: predecir siempre la clase mayoritaria ---
     baseline = DummyClassifier(strategy="most_frequent", random_state=SEMILLA_ALEATORIA)
     baseline.fit(X_train, y_train)
     accuracy_baseline = float(accuracy_score(y_test, baseline.predict(X_test)))

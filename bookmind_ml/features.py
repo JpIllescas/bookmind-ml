@@ -1,8 +1,4 @@
-"""Features del documento (seccion 4.1), calculadas sin llamar al LLM.
-
-`extraer_features` da el dict interpretable; `FeaturesNumericas` lo mete en
-el Pipeline de scikit-learn junto al TF-IDF.
-"""
+"""Features interpretables del documento, calculadas sin llamar al LLM."""
 
 from __future__ import annotations
 
@@ -33,7 +29,7 @@ _RE_ENCABEZADO = re.compile(
     re.IGNORECASE | re.MULTILINE,
 )
 
-# Orden fijo: el modelo depende de el. Agregar al final y reentrenar.
+# El orden es fijo: el modelo entrenado depende de el.
 NOMBRES_FEATURES: tuple[str, ...] = (
     "densidad_matematica",
     "densidad_digitos",
@@ -51,12 +47,7 @@ NOMBRES_FEATURES: tuple[str, ...] = (
 
 
 def _riqueza_lexica(palabras: list[str]) -> float:
-    """Riqueza lexica robusta a la longitud (MSTTR).
-
-    El TTR crudo baja conforme crece el documento: un texto corto llego a dar
-    0.86 contra un rango de entrenamiento de 0.13-0.16 y arrastro la
-    prediccion entera. Promediar el TTR de segmentos fijos lo corrige.
-    """
+    """Riqueza lexica (MSTTR): promedia el TTR de segmentos de tamano fijo."""
     n = len(palabras)
     if n == 0:
         return 0.0
@@ -124,10 +115,7 @@ def extraer_features(texto: str) -> dict[str, float]:
 
 
 class FeaturesNumericas(BaseEstimator, TransformerMixin):
-    """Convierte textos en la matriz numerica, en paralelo al TfidfVectorizer.
-
-    Aporta lo que el TF-IDF no ve: simbolos, legibilidad, longitud de frase.
-    """
+    """Matriz numerica con lo que el TF-IDF no ve: simbolos, legibilidad, frases."""
 
     def fit(self, X, y=None):  # noqa: N803 - convencion de sklearn
         return self
