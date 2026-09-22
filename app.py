@@ -10,7 +10,7 @@ from typing import Any
 from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel, Field
 
-from bookmind_ml import __version__
+from bookmind_ml import __version__, estudio
 from bookmind_ml.classifier import RUTA_METRICAS, clasificador
 from bookmind_ml.dataset import DatasetVacioError, cargar_semilla
 from bookmind_ml.readability import analizar
@@ -183,3 +183,43 @@ def metrics() -> dict[str, Any]:
             detail="Todavia no se ha entrenado el modelo.",
         )
     return json.loads(RUTA_METRICAS.read_text(encoding="utf-8"))
+
+
+# --------------------------------------------------------------------------
+# Motor de estudio propio (sin LLM)
+# --------------------------------------------------------------------------
+
+class PaginaEntrada(BaseModel):
+    pagina: int = Field(..., ge=1)
+    texto: str
+
+
+class PeticionEstudio(BaseModel):
+    paginas: list[PaginaEntrada] = Field(..., min_length=1)
+    cantidad: int | None = Field(default=None, ge=1, le=40)
+
+
+# Generador por tipo de material; el backend usa las mismas claves.
+GENERADORES = {
+    "summary": (estudio.resumir, 8),
+    "concepts": (estudio.glosario, 12),
+    "flashcards": (estudio.generar_flashcards, 10),
+    "quiz": (estudio.generar_quiz, 5),
+    "timeline": (estudio.generar_linea_tiempo, 14),
+}
+
+
+@app.post("/study/{tipo}")
+def study(tipo: str, peticion: PeticionEstudio) -> dict[str, Any]:
+    """Genera un material desde el texto del libro; cada item trae su pagina de origen."""
+    if tipo not in GENERADORES:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No existe el generador '{tipo}'. Usa uno de: {', '.join(GENERADORES)}.",
+        )
+
+    generador, por_defecto = GENERADORES[tipo]
+    paginas = [p.model_dump() for p in peticion.paginas]
+    items = generador(paginas, peticion.cantidad or por_defecto)
+
+    return {"tipo": tipo, "origen": "motor", "items": items}
