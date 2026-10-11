@@ -157,7 +157,9 @@ def extraer_conceptos(paginas: list[dict[str, Any]], cantidad: int = 12) -> list
             continue
 
         if clave in definidos:
-            _, definicion, pagina, es_definicion = definidos[clave]
+            # Vino de un patron ("X es...", "X consiste en..."): la fuerza del verbo solo ordena.
+            _, definicion, pagina, _ = definidos[clave]
+            es_definicion = True
         else:
             # Sin definicion: la oracion mas central entre las que lo nombran hace de contexto.
             contexto = oraciones_centrales(apariciones, 1)[0]

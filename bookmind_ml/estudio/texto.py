@@ -36,7 +36,10 @@ MIN_PALABRAS = 6
 MAX_PALABRAS = 60
 
 # Punto, cierre de exclamacion o interrogacion seguido de mayuscula, o un salto de linea.
-_RE_LIMITE = re.compile(r"(?<=[.!?…])\s+(?=[A-ZÁÉÍÓÚÑ¿¡«\"(—\-–])|\n+")
+# "a. C." y "d. C." llevan mayuscula tras el punto y no cierran la oracion.
+_RE_LIMITE = re.compile(
+    r"(?<=[.!?…])(?<!\ba\.)(?<!\bd\.)\s+(?=[A-ZÁÉÍÓÚÑ¿¡«\"(—\-–])|\n+"
+)
 _RE_PALABRA = re.compile(r"[a-záéíóúüñA-ZÁÉÍÓÚÜÑ][a-záéíóúüñA-ZÁÉÍÓÚÜÑ'-]*")
 _RE_DIGITO = re.compile(r"\d")
 # El romano va en mayusculas estrictas: "vi" o "civil" no son encabezados.

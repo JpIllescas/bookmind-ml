@@ -17,6 +17,15 @@ matplotlib>=3.11.0
 # No participa en el runtime del servicio.
 pypdf>=6.1.0
 
+# OCR de PDFs escaneados (/ocr/trabajos). Requiere Tesseract con el idioma spa; ver README.
+pypdfium2>=5.14.0
+pytesseract>=0.3.13
+opencv-python-headless>=5.0.0
+rapidfuzz>=3.14.0
+pillow>=11.0.0
+# FastAPI lo necesita para recibir el PDF como multipart.
+python-multipart>=0.0.32
+
 # Tests
 pytest>=8.4.0
 httpx>=0.28.0

@@ -1,0 +1,176 @@
+{
+  "generado": "2026-10-09T00:26:09+00:00",
+  "original": "Libro_Grande_260_paginas.pdf",
+  "escaneado": "Libro_Grande_escaneado.pdf",
+  "tesseract": "5.5.3.20260724",
+  "idioma": "spa",
+  "dpi": 300,
+  "paginas": 20,
+  "cerGlobal": 0.3462,
+  "cerSinOrdenGlobal": 0.0255,
+  "cerMediana": 0.3642,
+  "confianzaMedia": 0.9121,
+  "segundosPorPagina": 2.04,
+  "porPagina": [
+    {
+      "pagina": 1,
+      "cer": 0.3645,
+      "cerSinOrden": 0.0,
+      "confianza": 0.9215,
+      "segundos": 1.83,
+      "caracteres": 749
+    },
+    {
+      "pagina": 2,
+      "cer": 0.3645,
+      "cerSinOrden": 0.0,
+      "confianza": 0.9223,
+      "segundos": 1.77,
+      "caracteres": 749
+    },
+    {
+      "pagina": 3,
+      "cer": 0.3645,
+      "cerSinOrden": 0.0,
+      "confianza": 0.921,
+      "segundos": 1.83,
+      "caracteres": 749
+    },
+    {
+      "pagina": 4,
+      "cer": 0.3645,
+      "cerSinOrden": 0.0,
+      "confianza": 0.9206,
+      "segundos": 1.98,
+      "caracteres": 749
+    },
+    {
+      "pagina": 5,
+      "cer": 0.3645,
+      "cerSinOrden": 0.0,
+      "confianza": 0.9209,
+      "segundos": 2.79,
+      "caracteres": 749
+    },
+    {
+      "pagina": 6,
+      "cer": 0.3645,
+      "cerSinOrden": 0.0,
+      "confianza": 0.9191,
+      "segundos": 2.4,
+      "caracteres": 749
+    },
+    {
+      "pagina": 7,
+      "cer": 0.3645,
+      "cerSinOrden": 0.0,
+      "confianza": 0.9205,
+      "segundos": 2.34,
+      "caracteres": 749
+    },
+    {
+      "pagina": 8,
+      "cer": 0.3645,
+      "cerSinOrden": 0.0,
+      "confianza": 0.9181,
+      "segundos": 1.99,
+      "caracteres": 749
+    },
+    {
+      "pagina": 9,
+      "cer": 0.3645,
+      "cerSinOrden": 0.0,
+      "confianza": 0.9191,
+      "segundos": 2.11,
+      "caracteres": 749
+    },
+    {
+      "pagina": 10,
+      "cer": 0.1495,
+      "cerSinOrden": 0.1896,
+      "confianza": 0.8389,
+      "segundos": 2.38,
+      "caracteres": 823
+    },
+    {
+      "pagina": 11,
+      "cer": 0.364,
+      "cerSinOrden": 0.0,
+      "confianza": 0.9215,
+      "segundos": 2.01,
+      "caracteres": 750
+    },
+    {
+      "pagina": 12,
+      "cer": 0.4427,
+      "cerSinOrden": 0.0,
+      "confianza": 0.9227,
+      "segundos": 2.07,
+      "caracteres": 750
+    },
+    {
+      "pagina": 13,
+      "cer": 0.364,
+      "cerSinOrden": 0.0,
+      "confianza": 0.9212,
+      "segundos": 2.06,
+      "caracteres": 750
+    },
+    {
+      "pagina": 14,
+      "cer": 0.364,
+      "cerSinOrden": 0.0,
+      "confianza": 0.9189,
+      "segundos": 2.06,
+      "caracteres": 750
+    },
+    {
+      "pagina": 15,
+      "cer": 0.364,
+      "cerSinOrden": 0.0,
+      "confianza": 0.9207,
+      "segundos": 1.87,
+      "caracteres": 750
+    },
+    {
+      "pagina": 16,
+      "cer": 0.364,
+      "cerSinOrden": 0.0,
+      "confianza": 0.9199,
+      "segundos": 1.96,
+      "caracteres": 750
+    },
+    {
+      "pagina": 17,
+      "cer": 0.364,
+      "cerSinOrden": 0.0,
+      "confianza": 0.9199,
+      "segundos": 1.77,
+      "caracteres": 750
+    },
+    {
+      "pagina": 18,
+      "cer": 0.364,
+      "cerSinOrden": 0.0,
+      "confianza": 0.9201,
+      "segundos": 1.84,
+      "caracteres": 750
+    },
+    {
+      "pagina": 19,
+      "cer": 0.364,
+      "cerSinOrden": 0.0,
+      "confianza": 0.9201,
+      "segundos": 1.75,
+      "caracteres": 750
+    },
+    {
+      "pagina": 20,
+      "cer": 0.1762,
+      "cerSinOrden": 0.2795,
+      "confianza": 0.8354,
+      "segundos": 1.9,
+      "caracteres": 823
+    }
+  ]
+}
