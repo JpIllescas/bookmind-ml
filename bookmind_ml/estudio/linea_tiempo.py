@@ -14,6 +14,7 @@ _RE_ANTES_DE_CRISTO = re.compile(r"\b(\d{1,4})\s*a\.?\s*(?:de\s*)?C\b", re.IGNOR
 
 VALOR_ROMANO = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100}
 MAX_EVENTOS = 14
+MAX_FECHAS_POR_ORACION = 2
 
 
 def _romano(texto: str) -> int | None:
@@ -48,15 +49,31 @@ def _fechas(texto: str) -> list[tuple[int, str]]:
 
 
 def generar_linea_tiempo(paginas: list[dict[str, Any]], cantidad: int = MAX_EVENTOS) -> list[dict[str, Any]]:
-    eventos: dict[tuple[int, int], dict[str, Any]] = {}
+    # Una entrada por fecha: la primera vez que el libro la menciona.
+    eventos: dict[int, dict[str, Any]] = {}
 
     for oracion in segmentar(paginas):
-        for valor, etiqueta in _fechas(oracion.texto):
-            # Una fecha por pagina: la misma efemeride suele repetirse en el mismo pasaje.
-            eventos.setdefault(
-                (valor, oracion.pagina),
-                {"fecha": etiqueta, "valor": valor, "texto": oracion.texto, "pagina": oracion.pagina},
-            )
+        fechas = _fechas(oracion.texto)
+        # Tres o mas fechas en una oracion es una tabla o una cronologia apretada, no un evento.
+        if not fechas or len({valor for valor, _ in fechas}) > MAX_FECHAS_POR_ORACION:
+            continue
+
+        # Una oracion es un solo evento: "entre los siglos XVII y XIX" empieza en el XVII.
+        valor, etiqueta = min(fechas)
+        eventos.setdefault(
+            valor,
+            {"fecha": etiqueta, "valor": valor, "texto": oracion.texto, "pagina": oracion.pagina},
+        )
 
     ordenados = sorted(eventos.values(), key=lambda e: (e["valor"], e["pagina"]))
-    return ordenados[:cantidad]
+    return _repartidos(ordenados, cantidad)
+
+
+def _repartidos(eventos: list[dict[str, Any]], cantidad: int) -> list[dict[str, Any]]:
+    """Si sobran, se eligen a lo largo de toda la cronologia y no solo los mas antiguos."""
+    if len(eventos) <= cantidad:
+        return eventos
+    if cantidad <= 1:
+        return eventos[:cantidad]
+    paso = (len(eventos) - 1) / (cantidad - 1)
+    return [eventos[round(i * paso)] for i in range(cantidad)]

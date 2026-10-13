@@ -49,6 +49,57 @@ _RE_ENCABEZADO = re.compile(
 )
 
 
+_RE_DIALOGO = re.compile(r"^[—\-–¡¿\"«]|\s—\s?(dijo|preguntó|respondió|añadió|exclamó|contestó)\b")
+# Sobre texto normalizado: quien habla de si mismo o a otro no esta definiendo nada.
+_RE_PRIMERA_SEGUNDA = re.compile(
+    r"\b(yo|me|mi|mis|mio|mia|mios|mias|conmigo|soy|estoy|tu|tus|te|ti|contigo|eres)\b"
+)
+# Lo que la oracion pide hacer al estudiante en un libro escolar, no lo que explica (yo / nosotros).
+_RE_ACTIVIDAD = re.compile(
+    r"\b(en (mi|el|tu|su) cuaderno|"
+    r"(observ|copi|dibuj|coment|convers|investig|identific|complet|recort|pint|elabor|subray|anot|realiz|"
+    r"pregunt|organiz|compar|explic|clasific|dialog|reflexion)(o|amos)|"
+    r"(escrib|describ)(o|imos)|(respond|le)(o|emos)|peg(o|amos))\b"
+)
+# Una cabecera de pagina pegada a la oracion: "MICHEL FOUCAULT: LA ESCALOMETRIA ... Michel Foucault fue..."
+MIN_PALABRAS_TITULO = 2
+
+
+def es_dialogo(texto: str) -> bool:
+    return _RE_DIALOGO.search(texto) is not None
+
+
+def en_primera_o_segunda_persona(texto: str) -> bool:
+    return _RE_PRIMERA_SEGUNDA.search(normalizar(texto)) is not None
+
+
+def es_actividad(texto: str) -> bool:
+    """Consignas para el estudiante y listas con viñetas: no explican el tema."""
+    return "•" in texto or _RE_ACTIVIDAD.search(normalizar(texto)) is not None
+
+
+def _palabra_en_mayusculas(palabra: str) -> bool:
+    letras = [c for c in palabra if c.isalpha()]
+    # Tolera un error de OCR en palabras largas ("MiCHEL"), pero "El" o "En" no son mayúsculas.
+    tolerancia = 1 if len(letras) >= 4 else 0
+    return len(letras) >= 2 and sum(not c.isupper() for c in letras) <= tolerancia and letras[0].isupper()
+
+
+def sin_titulo_inicial(texto: str) -> str:
+    """Quita la cabecera en mayusculas que la extraccion pego delante de la oracion."""
+    partes = texto.split()
+    inicio = 0
+    while inicio < len(partes) and (_palabra_en_mayusculas(partes[inicio]) or partes[inicio] in {"Y", "DE", "—", "-", ":"}):
+        inicio += 1
+    return " ".join(partes[inicio:]) if inicio >= MIN_PALABRAS_TITULO else texto
+
+
+def es_mayusculas(texto: str) -> bool:
+    """Titulos y portadas: casi todas las letras en mayuscula."""
+    letras = [c for c in texto if c.isalpha()]
+    return len(letras) >= 6 and sum(c.isupper() for c in letras) / len(letras) >= 0.6
+
+
 @dataclass(frozen=True)
 class Oracion:
     texto: str
@@ -85,7 +136,7 @@ def segmentar(paginas: list[dict[str, Any]]) -> list[Oracion]:
         for trozo in _RE_LIMITE.split(str(pagina.get("texto") or "")):
             texto = " ".join(trozo.split()).strip(" \t-–—•·")
             # El encabezado de capitulo se pega a la primera oracion del capitulo.
-            texto = _RE_ENCABEZADO.sub("", texto)
+            texto = sin_titulo_inicial(_RE_ENCABEZADO.sub("", texto))
             cuantas = len(palabras(texto))
 
             if not MIN_PALABRAS <= cuantas <= MAX_PALABRAS:

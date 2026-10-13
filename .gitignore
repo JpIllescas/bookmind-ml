@@ -23,10 +23,10 @@ __pycache__/
 .ipynb_checkpoints/
 
 # --- Modelos entrenados ---
-# Son artefactos binarios que se regeneran con `python -m bookmind_ml.train`.
-# Ademas evita que el modelo de prueba (datos sinteticos) acabe en el repo
-# pareciendo el real.
+# Se regeneran con `python -m bookmind_ml.train`; los de pruebas no se versionan.
 models/*.joblib
+# El clasificador si viaja: sin el, un clon nuevo responde 503 en /classify (es_demo lo marca como demo).
+!models/clasificador_materia.joblib
 
 # Las metricas SI se versionan: son la evidencia de la seccion 4.5 y hay que
 # poder rastrear que numeros se reportaron y cuando.

@@ -8,7 +8,17 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from .resumen import oraciones_centrales
-from .texto import Oracion, contiene, palabras, segmentar, tokens
+from .texto import (
+    Oracion,
+    contiene,
+    en_primera_o_segunda_persona,
+    es_actividad,
+    es_dialogo,
+    es_mayusculas,
+    palabras,
+    segmentar,
+    tokens,
+)
 
 MAX_NGRAMA = 3
 MIN_FRECUENCIA = 2
@@ -35,10 +45,27 @@ _PATRONES_DEFINICION = [
 ]
 
 # Verbos que no definen sino que narran: "el principito es muy pequeno" no es definicion.
-_RESTO_DEBIL = re.compile(r"^(muy|tan|mas|menos|casi|solo|bastante|demasiado|un poco)\b", re.IGNORECASE)
+_RESTO_DEBIL = re.compile(
+    r"^(muy|tan|m[aá]s|menos|casi|s[oó]lo|bastante|demasiado|un poco|as[ií])\b", re.IGNORECASE
+)
 
 # Con "es" o "son" cualquier frase parece definicion; solo cuentan para terminos frecuentes.
 _VERBOS_DEBILES = {"es", "son", "era", "eran", "comprende", "abarca", ""}
+
+# "La celula es la unidad..." clasifica; "El desierto es bello" solo describe.
+_VERBOS_SINGULARES = {"es", "era"}
+_PREDICADO_QUE_CLASIFICA = re.compile(
+    r"^(el|la|lo|los|las|un|una|unos|unas|uno de|una de|aquel|aquella|aquello)\b", re.IGNORECASE
+)
+
+# "Materiales: un limón, ruda, tilo..." es una lista, no una definicion.
+_PATRON_DOS_PUNTOS = _PATRONES_DEFINICION[2]
+PALABRAS_POR_ELEMENTO_DE_LISTA = 3
+
+
+def _es_lista(resto: str) -> bool:
+    elementos = [e for e in re.split(r",|\by\b", resto) if e.strip()]
+    return len(elementos) >= 3 and sum(len(e.split()) for e in elementos) / len(elementos) <= PALABRAS_POR_ELEMENTO_DE_LISTA
 
 
 @dataclass
@@ -90,6 +117,10 @@ def _sin_solapes(ranking: list[tuple[str, int]]) -> list[tuple[str, int]]:
 
 def _definicion(oracion: str) -> tuple[str, str, bool] | None:
     """Termino, oracion completa y si el verbo define de verdad ("significa", "se llama")."""
+    # "Admirar significa reconocer que yo soy..." o "—añadió el principito": es un personaje hablando.
+    if es_dialogo(oracion) or en_primera_o_segunda_persona(oracion) or es_actividad(oracion):
+        return None
+
     for patron in _PATRONES_DEFINICION:
         coincidencia = patron.match(oracion.strip())
         if not coincidencia:
@@ -100,6 +131,13 @@ def _definicion(oracion: str) -> tuple[str, str, bool] | None:
         verbo = (coincidencia.groupdict().get("verbo") or "").lower()
 
         if len(palabras(termino)) > 4 or _RESTO_DEBIL.match(resto):
+            continue
+        # "ERNST JUNGER: PODER Y..." es un titulo; "número 2 era así" no es un termino.
+        if es_mayusculas(termino) or re.search(r"\d", termino):
+            continue
+        if verbo in _VERBOS_SINGULARES and not _PREDICADO_QUE_CLASIFICA.match(resto):
+            continue
+        if patron is _PATRON_DOS_PUNTOS and _es_lista(resto):
             continue
         # "En mi tierra" o "Y añadió" no son terminos: deben abrir y cerrar con palabra de contenido.
         partes = tokens(termino)

@@ -23,8 +23,9 @@ RUTA_MODELOS = Path(__file__).resolve().parent.parent / "models"
 RUTA_MODELO = RUTA_MODELOS / "clasificador_materia.joblib"
 RUTA_METRICAS = RUTA_MODELOS / "metricas.json"
 
-# Umbral por debajo del cual no se fuerza una clase.
-UMBRAL_CONFIANZA = 0.45
+# Umbral por debajo del cual no se fuerza una clase. Corpus Mineduc (4 clases, azar 0.25): la
+# probabilidad top-1 fuera de muestra va de 0.34 a 0.65 (mediana) y todas aciertan; 0.45 descartaba ~10 %.
+UMBRAL_CONFIANZA = 0.35
 
 
 @dataclass(frozen=True)

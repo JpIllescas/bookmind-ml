@@ -2,14 +2,23 @@
 
 from __future__ import annotations
 
-import re
 from typing import Any
 
 import numpy as np
 from scipy.sparse import csr_matrix
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-from .texto import STOPWORDS, Oracion, contiene, normalizar, segmentar, tokens
+from .texto import (
+    STOPWORDS,
+    Oracion,
+    contiene,
+    es_actividad,
+    es_dialogo,
+    es_mayusculas,
+    normalizar,
+    segmentar,
+    tokens,
+)
 
 AMORTIGUACION = 0.85
 ITERACIONES = 60
@@ -24,8 +33,9 @@ COBERTURA_POR_TERMINO = 0.25
 TERMINOS_PARA_RESUMEN = 12
 # Palabras con contenido que necesita una oracion para poder representar algo.
 MINIMO_CONTENIDO = 4
-
-_RE_DIALOGO = re.compile(r"^[—\-–¡¿\"«]|\s—\s?(dijo|preguntó|respondió|añadió|exclamó|contestó)\b")
+# Portadas, titulos y consignas ("Copio un cuadro...") pueden ser centrales sin resumir nada.
+PESO_TITULO = 0.05
+PESO_ACTIVIDAD = 0.2
 
 
 def vectorizar(textos: list[str]) -> csr_matrix:
@@ -91,8 +101,10 @@ def _prior(oracion: Oracion) -> float:
 
     cuantas = len(oracion.texto.split())
     largo = min(1.0, cuantas / PALABRAS_PLENAS)
-    dialogo = 0.6 if _RE_DIALOGO.search(oracion.texto) else 1.0
-    return largo * dialogo
+    dialogo = 0.6 if es_dialogo(oracion.texto) else 1.0
+    titulo = PESO_TITULO if es_mayusculas(oracion.texto) else 1.0
+    actividad = PESO_ACTIVIDAD if es_actividad(oracion.texto) else 1.0
+    return largo * dialogo * titulo * actividad
 
 
 def oraciones_centrales(

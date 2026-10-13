@@ -55,9 +55,9 @@ class MetricasLegibilidad:
     palabras_por_oracion: float
 
 
-# Cortes tomados de la escala clasica de Fernandez-Huerta.
-UMBRAL_PRIMARIA_BAJA = 90.0   # L >= 90  -> muy facil
-UMBRAL_PRIMARIA_ALTA = 75.0   # 75 <= L < 90
+# Calibrados con los libros del Mineduc: con la escala clasica (90/75) casi toda la primaria salia "basicos".
+UMBRAL_PRIMARIA_BAJA = 83.0   # L >= 83
+UMBRAL_PRIMARIA_ALTA = 60.0   # 60 <= L < 83
 
 
 def clasificar_nivel(puntuacion: float) -> str:

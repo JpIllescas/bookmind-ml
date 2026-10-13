@@ -1,176 +1,392 @@
 {
-  "generado": "2026-10-09T00:26:09+00:00",
-  "original": "Libro_Grande_260_paginas.pdf",
-  "escaneado": "Libro_Grande_escaneado.pdf",
+  "generado": "2026-10-12T04:09:33+00:00",
+  "original": "principito.pdf",
+  "escaneado": "principito_escaneado.pdf",
   "tesseract": "5.5.3.20260724",
   "idioma": "spa",
   "dpi": 300,
-  "paginas": 20,
-  "cerGlobal": 0.3462,
-  "cerSinOrdenGlobal": 0.0255,
-  "cerMediana": 0.3642,
-  "confianzaMedia": 0.9121,
-  "segundosPorPagina": 2.04,
+  "paginas": 47,
+  "cerGlobal": 0.0061,
+  "cerSinOrdenGlobal": 0.0356,
+  "cerMediana": 0.005,
+  "confianzaMedia": 0.8995,
+  "segundosPorPagina": 1.8,
   "porPagina": [
     {
       "pagina": 1,
-      "cer": 0.3645,
-      "cerSinOrden": 0.0,
-      "confianza": 0.9215,
-      "segundos": 1.83,
-      "caracteres": 749
+      "cer": 0.3333,
+      "cerSinOrden": 0.3333,
+      "confianza": 0.8814,
+      "segundos": 0.94,
+      "caracteres": 42
     },
     {
       "pagina": 2,
-      "cer": 0.3645,
-      "cerSinOrden": 0.0,
-      "confianza": 0.9223,
-      "segundos": 1.77,
-      "caracteres": 749
+      "cer": 0.0013,
+      "cerSinOrden": 0.0013,
+      "confianza": 0.9232,
+      "segundos": 1.71,
+      "caracteres": 1564
     },
     {
       "pagina": 3,
-      "cer": 0.3645,
-      "cerSinOrden": 0.0,
-      "confianza": 0.921,
-      "segundos": 1.83,
-      "caracteres": 749
+      "cer": 0.002,
+      "cerSinOrden": 0.004,
+      "confianza": 0.9179,
+      "segundos": 1.74,
+      "caracteres": 1510
     },
     {
       "pagina": 4,
-      "cer": 0.3645,
-      "cerSinOrden": 0.0,
-      "confianza": 0.9206,
-      "segundos": 1.98,
-      "caracteres": 749
+      "cer": 0.0027,
+      "cerSinOrden": 0.0027,
+      "confianza": 0.9175,
+      "segundos": 2.09,
+      "caracteres": 2196
     },
     {
       "pagina": 5,
-      "cer": 0.3645,
-      "cerSinOrden": 0.0,
-      "confianza": 0.9209,
-      "segundos": 2.79,
-      "caracteres": 749
+      "cer": 0.0186,
+      "cerSinOrden": 0.0362,
+      "confianza": 0.8901,
+      "segundos": 1.5,
+      "caracteres": 1076
     },
     {
       "pagina": 6,
-      "cer": 0.3645,
-      "cerSinOrden": 0.0,
-      "confianza": 0.9191,
-      "segundos": 2.4,
-      "caracteres": 749
+      "cer": 0.0108,
+      "cerSinOrden": 0.031,
+      "confianza": 0.898,
+      "segundos": 1.69,
+      "caracteres": 1485
     },
     {
       "pagina": 7,
-      "cer": 0.3645,
-      "cerSinOrden": 0.0,
-      "confianza": 0.9205,
-      "segundos": 2.34,
-      "caracteres": 749
+      "cer": 0.0062,
+      "cerSinOrden": 0.0093,
+      "confianza": 0.9159,
+      "segundos": 2.09,
+      "caracteres": 1614
     },
     {
       "pagina": 8,
-      "cer": 0.3645,
-      "cerSinOrden": 0.0,
-      "confianza": 0.9181,
-      "segundos": 1.99,
-      "caracteres": 749
+      "cer": 0.0018,
+      "cerSinOrden": 0.0051,
+      "confianza": 0.9184,
+      "segundos": 2.39,
+      "caracteres": 2729
     },
     {
       "pagina": 9,
-      "cer": 0.3645,
-      "cerSinOrden": 0.0,
-      "confianza": 0.9191,
-      "segundos": 2.11,
-      "caracteres": 749
+      "cer": 0.0045,
+      "cerSinOrden": 0.0182,
+      "confianza": 0.9121,
+      "segundos": 1.81,
+      "caracteres": 1761
     },
     {
       "pagina": 10,
-      "cer": 0.1495,
-      "cerSinOrden": 0.1896,
-      "confianza": 0.8389,
-      "segundos": 2.38,
-      "caracteres": 823
+      "cer": 0.0026,
+      "cerSinOrden": 0.0026,
+      "confianza": 0.9228,
+      "segundos": 2.32,
+      "caracteres": 2675
     },
     {
       "pagina": 11,
-      "cer": 0.364,
-      "cerSinOrden": 0.0,
-      "confianza": 0.9215,
-      "segundos": 2.01,
-      "caracteres": 750
+      "cer": 0.0105,
+      "cerSinOrden": 0.0262,
+      "confianza": 0.8988,
+      "segundos": 1.68,
+      "caracteres": 1526
     },
     {
       "pagina": 12,
-      "cer": 0.4427,
-      "cerSinOrden": 0.0,
-      "confianza": 0.9227,
-      "segundos": 2.07,
-      "caracteres": 750
+      "cer": 0.0124,
+      "cerSinOrden": 0.0404,
+      "confianza": 0.9036,
+      "segundos": 1.82,
+      "caracteres": 1780
     },
     {
       "pagina": 13,
-      "cer": 0.364,
-      "cerSinOrden": 0.0,
-      "confianza": 0.9212,
-      "segundos": 2.06,
-      "caracteres": 750
+      "cer": 0.0063,
+      "cerSinOrden": 0.0148,
+      "confianza": 0.9183,
+      "segundos": 2.13,
+      "caracteres": 2364
     },
     {
       "pagina": 14,
-      "cer": 0.364,
-      "cerSinOrden": 0.0,
-      "confianza": 0.9189,
-      "segundos": 2.06,
-      "caracteres": 750
+      "cer": 0.011,
+      "cerSinOrden": 0.0284,
+      "confianza": 0.9084,
+      "segundos": 1.91,
+      "caracteres": 1902
     },
     {
       "pagina": 15,
-      "cer": 0.364,
-      "cerSinOrden": 0.0,
-      "confianza": 0.9207,
-      "segundos": 1.87,
-      "caracteres": 750
+      "cer": 0.0035,
+      "cerSinOrden": 0.0035,
+      "confianza": 0.9162,
+      "segundos": 2.01,
+      "caracteres": 2022
     },
     {
       "pagina": 16,
-      "cer": 0.364,
-      "cerSinOrden": 0.0,
-      "confianza": 0.9199,
-      "segundos": 1.96,
-      "caracteres": 750
+      "cer": 0.0029,
+      "cerSinOrden": 0.0157,
+      "confianza": 0.9139,
+      "segundos": 1.8,
+      "caracteres": 1724
     },
     {
       "pagina": 17,
-      "cer": 0.364,
-      "cerSinOrden": 0.0,
-      "confianza": 0.9199,
-      "segundos": 1.77,
-      "caracteres": 750
+      "cer": 0.0047,
+      "cerSinOrden": 0.0306,
+      "confianza": 0.9014,
+      "segundos": 1.83,
+      "caracteres": 1700
     },
     {
       "pagina": 18,
-      "cer": 0.364,
-      "cerSinOrden": 0.0,
-      "confianza": 0.9201,
-      "segundos": 1.84,
-      "caracteres": 750
+      "cer": 0.0034,
+      "cerSinOrden": 0.0602,
+      "confianza": 0.9001,
+      "segundos": 2.0,
+      "caracteres": 2044
     },
     {
       "pagina": 19,
-      "cer": 0.364,
-      "cerSinOrden": 0.0,
-      "confianza": 0.9201,
-      "segundos": 1.75,
-      "caracteres": 750
+      "cer": 0.0082,
+      "cerSinOrden": 0.0483,
+      "confianza": 0.8949,
+      "segundos": 1.81,
+      "caracteres": 1697
     },
     {
       "pagina": 20,
-      "cer": 0.1762,
-      "cerSinOrden": 0.2795,
-      "confianza": 0.8354,
-      "segundos": 1.9,
-      "caracteres": 823
+      "cer": 0.0062,
+      "cerSinOrden": 0.078,
+      "confianza": 0.8848,
+      "segundos": 1.64,
+      "caracteres": 1449
+    },
+    {
+      "pagina": 21,
+      "cer": 0.0094,
+      "cerSinOrden": 0.0788,
+      "confianza": 0.895,
+      "segundos": 1.77,
+      "caracteres": 1600
+    },
+    {
+      "pagina": 22,
+      "cer": 0.0093,
+      "cerSinOrden": 0.0741,
+      "confianza": 0.8901,
+      "segundos": 1.66,
+      "caracteres": 1295
+    },
+    {
+      "pagina": 23,
+      "cer": 0.0071,
+      "cerSinOrden": 0.0369,
+      "confianza": 0.8788,
+      "segundos": 1.74,
+      "caracteres": 1544
+    },
+    {
+      "pagina": 24,
+      "cer": 0.0029,
+      "cerSinOrden": 0.0326,
+      "confianza": 0.9044,
+      "segundos": 1.8,
+      "caracteres": 1748
+    },
+    {
+      "pagina": 25,
+      "cer": 0.0084,
+      "cerSinOrden": 0.0484,
+      "confianza": 0.8889,
+      "segundos": 1.78,
+      "caracteres": 1675
+    },
+    {
+      "pagina": 26,
+      "cer": 0.0049,
+      "cerSinOrden": 0.0296,
+      "confianza": 0.8936,
+      "segundos": 1.74,
+      "caracteres": 1620
+    },
+    {
+      "pagina": 27,
+      "cer": 0.005,
+      "cerSinOrden": 0.043,
+      "confianza": 0.894,
+      "segundos": 1.88,
+      "caracteres": 1792
+    },
+    {
+      "pagina": 28,
+      "cer": 0.0038,
+      "cerSinOrden": 0.0414,
+      "confianza": 0.9045,
+      "segundos": 1.78,
+      "caracteres": 1595
+    },
+    {
+      "pagina": 29,
+      "cer": 0.0037,
+      "cerSinOrden": 0.0368,
+      "confianza": 0.9122,
+      "segundos": 2.04,
+      "caracteres": 2147
+    },
+    {
+      "pagina": 30,
+      "cer": 0.0078,
+      "cerSinOrden": 0.0552,
+      "confianza": 0.8852,
+      "segundos": 1.7,
+      "caracteres": 1539
+    },
+    {
+      "pagina": 31,
+      "cer": 0.0062,
+      "cerSinOrden": 0.0865,
+      "confianza": 0.8917,
+      "segundos": 1.67,
+      "caracteres": 1457
+    },
+    {
+      "pagina": 32,
+      "cer": 0.0045,
+      "cerSinOrden": 0.0519,
+      "confianza": 0.9083,
+      "segundos": 1.61,
+      "caracteres": 1348
+    },
+    {
+      "pagina": 33,
+      "cer": 0.0141,
+      "cerSinOrden": 0.1197,
+      "confianza": 0.862,
+      "segundos": 1.84,
+      "caracteres": 1562
+    },
+    {
+      "pagina": 34,
+      "cer": 0.0085,
+      "cerSinOrden": 0.034,
+      "confianza": 0.9061,
+      "segundos": 2.06,
+      "caracteres": 2117
+    },
+    {
+      "pagina": 35,
+      "cer": 0.0065,
+      "cerSinOrden": 0.0666,
+      "confianza": 0.8962,
+      "segundos": 1.92,
+      "caracteres": 1848
+    },
+    {
+      "pagina": 36,
+      "cer": 0.0057,
+      "cerSinOrden": 0.0687,
+      "confianza": 0.8909,
+      "segundos": 1.65,
+      "caracteres": 1411
+    },
+    {
+      "pagina": 37,
+      "cer": 0.0098,
+      "cerSinOrden": 0.0701,
+      "confianza": 0.8868,
+      "segundos": 1.65,
+      "caracteres": 1427
+    },
+    {
+      "pagina": 38,
+      "cer": 0.0023,
+      "cerSinOrden": 0.0241,
+      "confianza": 0.9103,
+      "segundos": 1.86,
+      "caracteres": 1740
+    },
+    {
+      "pagina": 39,
+      "cer": 0.0044,
+      "cerSinOrden": 0.0261,
+      "confianza": 0.9106,
+      "segundos": 1.86,
+      "caracteres": 1839
+    },
+    {
+      "pagina": 40,
+      "cer": 0.0037,
+      "cerSinOrden": 0.0386,
+      "confianza": 0.9064,
+      "segundos": 1.96,
+      "caracteres": 1916
+    },
+    {
+      "pagina": 41,
+      "cer": 0.0043,
+      "cerSinOrden": 0.0454,
+      "confianza": 0.8933,
+      "segundos": 1.64,
+      "caracteres": 1410
+    },
+    {
+      "pagina": 42,
+      "cer": 0.0036,
+      "cerSinOrden": 0.0399,
+      "confianza": 0.9049,
+      "segundos": 1.89,
+      "caracteres": 1932
+    },
+    {
+      "pagina": 43,
+      "cer": 0.007,
+      "cerSinOrden": 0.0405,
+      "confianza": 0.9031,
+      "segundos": 1.8,
+      "caracteres": 1704
+    },
+    {
+      "pagina": 44,
+      "cer": 0.0035,
+      "cerSinOrden": 0.0313,
+      "confianza": 0.9019,
+      "segundos": 1.8,
+      "caracteres": 1693
+    },
+    {
+      "pagina": 45,
+      "cer": 0.004,
+      "cerSinOrden": 0.0095,
+      "confianza": 0.9056,
+      "segundos": 1.54,
+      "caracteres": 1262
+    },
+    {
+      "pagina": 46,
+      "cer": 0.0004,
+      "cerSinOrden": 0.0004,
+      "confianza": 0.9229,
+      "segundos": 2.33,
+      "caracteres": 2233
+    },
+    {
+      "pagina": 47,
+      "cer": 4.6667,
+      "cerSinOrden": 4.6667,
+      "confianza": 0.79,
+      "segundos": 0.88,
+      "caracteres": 3
     }
   ]
 }

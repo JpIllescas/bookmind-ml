@@ -41,11 +41,23 @@ def _distractores(indice: int, similitud: np.ndarray, candidatos: list[str], cua
     return elegidos
 
 
+def _clave(opcion: str) -> str:
+    return " ".join(opcion.casefold().split())
+
+
 def _armar(pregunta: str, correcta: str, distractores: list[str], pagina: int) -> dict[str, Any] | None:
-    if len(distractores) < OPCIONES - 1:
+    # Dos conceptos pueden compartir definicion (o quedar iguales al recortarse): ninguna opcion se repite.
+    vistas = {_clave(correcta)}
+    unicos: list[str] = []
+    for distractor in distractores:
+        if _clave(distractor) not in vistas:
+            vistas.add(_clave(distractor))
+            unicos.append(distractor)
+
+    if len(unicos) < OPCIONES - 1:
         return None
 
-    opciones = [correcta, *distractores[: OPCIONES - 1]]
+    opciones = [correcta, *unicos[: OPCIONES - 1]]
     random.Random(_semilla(pregunta)).shuffle(opciones)
 
     return {
@@ -69,7 +81,8 @@ def generar_quiz(paginas: list[dict[str, Any]], cantidad: int = 5) -> list[dict[
         return []
 
     terminos = [c.termino for c in conceptos]
-    definidos = [c for c in conceptos if c.es_definicion]
+    # Cada opcion esconde su propio termino: si no, la correcta se delata repitiendo el de la pregunta.
+    descripciones = [_recortar(ocultar(c.definicion, c.termino)) for c in conceptos]
 
     # Similitud entre terminos por el contexto en que aparecen, no por sus letras.
     contextos = [" ".join(o.texto for o in c.oraciones[:8]) or c.termino for c in conceptos]
@@ -84,13 +97,16 @@ def generar_quiz(paginas: list[dict[str, Any]], cantidad: int = 5) -> list[dict[
         if len(preguntas) >= cantidad:
             break
 
-        if concepto.es_definicion and len(definidos) >= OPCIONES:
-            otras = [d.definicion for d in definidos if d is not concepto]
-            random.Random(_semilla(concepto.termino)).shuffle(otras)
+        if concepto.es_definicion:
+            # Los distractores salen de todos los conceptos, por parecido con este: cambian de pregunta a pregunta.
+            otras = [
+                d for d in _distractores(indice, similitud, descripciones, len(conceptos))
+                if not contiene(d, concepto.termino)
+            ]
             pregunta = _armar(
                 f"¿Cuál de estas afirmaciones describe «{concepto.termino}»?",
-                _recortar(concepto.definicion),
-                [_recortar(o) for o in otras],
+                descripciones[indice],
+                otras,
                 concepto.pagina,
             )
             if pregunta and pregunta["pregunta"] not in usadas:

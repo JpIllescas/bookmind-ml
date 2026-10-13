@@ -8,7 +8,7 @@ from contextlib import asynccontextmanager
 from dataclasses import asdict
 from typing import Any
 
-from fastapi import FastAPI, File, Form, HTTPException, Response, UploadFile, status
+from fastapi import Depends, FastAPI, File, Form, HTTPException, Response, UploadFile, status
 from pydantic import BaseModel, Field
 
 from bookmind_ml import __version__, estudio
@@ -18,6 +18,7 @@ from bookmind_ml.ocr import rasterizado, reconocimiento
 from bookmind_ml.ocr.trabajos import GestorTrabajos
 from bookmind_ml.dataset import DatasetVacioError, cargar_semilla
 from bookmind_ml.readability import analizar
+from bookmind_ml.seguridad import token_configurado, verificar_token
 from bookmind_ml.taxonomy import MATERIA_LEGIBLE, NIVEL_LEGIBLE
 from bookmind_ml.train import entrenar, guardar_metricas
 
@@ -37,6 +38,11 @@ async def lifespan(app: FastAPI):
             "[ml-service] AVISO: no hay modelo entrenado. /classify va a fallar "
             "hasta que ejecutes `python -m bookmind_ml.train` o llames a POST /train."
         )
+    if not token_configurado():
+        print(
+            "[ml-service] AVISO: ML_SERVICE_TOKEN no esta definido; cualquiera en la red puede "
+            "llamar al servicio. Definelo igual aqui y en el .env del backend."
+        )
     gestor_ocr.limpiar_carpeta()
     tesseract = reconocimiento.estado_tesseract()
     if not tesseract.tiene(config_ocr.OCR_IDIOMA):
@@ -54,6 +60,7 @@ app = FastAPI(
                 "nivel de lectura (indice Fernandez-Huerta).",
     version=__version__,
     lifespan=lifespan,
+    dependencies=[Depends(verificar_token)],
 )
 
 
@@ -90,6 +97,8 @@ class RespuestaClasificar(BaseModel):
     materiaExplicada: str
     # True si el modelo se entreno con datos sinteticos de prueba.
     modeloDemo: bool
+    # El backend lo guarda para reclasificar sus libros cuando cambie el modelo.
+    entrenadoEn: str | None
 
 
 # --------------------------------------------------------------------------
@@ -152,6 +161,7 @@ def classify(peticion: PeticionClasificar) -> RespuestaClasificar:
         legibilidad=resultado.legibilidad,
         materiaExplicada=resultado.materia_explicada,
         modeloDemo=clasificador.es_demo,
+        entrenadoEn=clasificador.entrenado_en,
     )
 
 

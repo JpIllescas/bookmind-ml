@@ -1,0 +1,289 @@
+{
+  "generado": "2026-10-12T04:20:22+00:00",
+  "cortes": {
+    "primariaBaja": 83.0,
+    "primariaAlta": 60.0
+  },
+  "libros": 25,
+  "aciertos": 16,
+  "aciertosEscalaClasica": 3,
+  "puntuacionMinimaEscolar": 61.79,
+  "limitacion": "Sin libros de ciclo basico en el corpus; la materia pesa mas que el grado (Matematicas 4.o da 88,8 y Lecturas 3.o, 74,8).",
+  "porLibro": [
+    {
+      "archivo": "mineduc_leo_y_escribo_paso_1.txt",
+      "grado": "1ro_primaria",
+      "puntuacion": 84.73,
+      "nivel": "primaria_baja",
+      "esperado": "primaria_baja",
+      "acierta": true,
+      "nivelEscalaClasica": "primaria_alta",
+      "silabasPorPalabra": 1.899,
+      "palabrasPorOracion": 7.99
+    },
+    {
+      "archivo": "mineduc_leo_y_escribo_paso_2.txt",
+      "grado": "1ro_primaria",
+      "puntuacion": 84.5,
+      "nivel": "primaria_baja",
+      "esperado": "primaria_baja",
+      "acierta": true,
+      "nivelEscalaClasica": "primaria_alta",
+      "silabasPorPalabra": 1.878,
+      "palabrasPorOracion": 9.49
+    },
+    {
+      "archivo": "mineduc_mi_libro_de_lecturas_1er_grado.txt",
+      "grado": "1ro_primaria",
+      "puntuacion": 83.29,
+      "nivel": "primaria_baja",
+      "esperado": "primaria_baja",
+      "acierta": true,
+      "nivelEscalaClasica": "primaria_alta",
+      "silabasPorPalabra": 1.922,
+      "palabrasPorOracion": 8.05
+    },
+    {
+      "archivo": "mineduc_matematicas_1g.txt",
+      "grado": "1ro_primaria",
+      "puntuacion": 84.62,
+      "nivel": "primaria_baja",
+      "esperado": "primaria_baja",
+      "acierta": true,
+      "nivelEscalaClasica": "primaria_alta",
+      "silabasPorPalabra": 1.978,
+      "palabrasPorOracion": 3.47
+    },
+    {
+      "archivo": "mineduc_comunicacion_y_lenguaje_2do.txt",
+      "grado": "2do_primaria",
+      "puntuacion": 71.73,
+      "nivel": "primaria_alta",
+      "esperado": "primaria_baja",
+      "acierta": false,
+      "nivelEscalaClasica": "basicos",
+      "silabasPorPalabra": 2.1,
+      "palabrasPorOracion": 8.96
+    },
+    {
+      "archivo": "mineduc_mi_libro_de_lecturas_2do_grado.txt",
+      "grado": "2do_primaria",
+      "puntuacion": 80.76,
+      "nivel": "primaria_alta",
+      "esperado": "primaria_baja",
+      "acierta": false,
+      "nivelEscalaClasica": "primaria_alta",
+      "silabasPorPalabra": 1.964,
+      "palabrasPorOracion": 8.08
+    },
+    {
+      "archivo": "mineduc_matematicas_2g.txt",
+      "grado": "2do_primaria",
+      "puntuacion": 76.46,
+      "nivel": "primaria_alta",
+      "esperado": "primaria_baja",
+      "acierta": false,
+      "nivelEscalaClasica": "primaria_alta",
+      "silabasPorPalabra": 2.092,
+      "palabrasPorOracion": 4.76
+    },
+    {
+      "archivo": "mineduc_comunicacion_y_lenguaje_3ro.txt",
+      "grado": "3ro_primaria",
+      "puntuacion": 71.54,
+      "nivel": "primaria_alta",
+      "esperado": "primaria_baja",
+      "acierta": false,
+      "nivelEscalaClasica": "basicos",
+      "silabasPorPalabra": 2.088,
+      "palabrasPorOracion": 9.83
+    },
+    {
+      "archivo": "mineduc_mi_libro_de_lecturas_3er_grado.txt",
+      "grado": "3ro_primaria",
+      "puntuacion": 74.76,
+      "nivel": "primaria_alta",
+      "esperado": "primaria_baja",
+      "acierta": false,
+      "nivelEscalaClasica": "basicos",
+      "silabasPorPalabra": 2.067,
+      "palabrasPorOracion": 7.9
+    },
+    {
+      "archivo": "mineduc_matematicas_3g.txt",
+      "grado": "3ro_primaria",
+      "puntuacion": 65.82,
+      "nivel": "primaria_alta",
+      "esperado": "primaria_baja",
+      "acierta": false,
+      "nivelEscalaClasica": "basicos",
+      "silabasPorPalabra": 2.176,
+      "palabrasPorOracion": 10.28
+    },
+    {
+      "archivo": "mineduc_ciencias_naturales_y_tecnologia_4to.txt",
+      "grado": "4to_primaria",
+      "puntuacion": 63.81,
+      "nivel": "primaria_alta",
+      "esperado": "primaria_alta",
+      "acierta": true,
+      "nivelEscalaClasica": "basicos",
+      "silabasPorPalabra": 2.191,
+      "palabrasPorOracion": 11.36
+    },
+    {
+      "archivo": "mineduc_ciencias_sociales_4to.txt",
+      "grado": "4to_primaria",
+      "puntuacion": 65.83,
+      "nivel": "primaria_alta",
+      "esperado": "primaria_alta",
+      "acierta": true,
+      "nivelEscalaClasica": "basicos",
+      "silabasPorPalabra": 2.149,
+      "palabrasPorOracion": 11.81
+    },
+    {
+      "archivo": "mineduc_comunicacion_y_lenguaje_4do.txt",
+      "grado": "4to_primaria",
+      "puntuacion": 71.65,
+      "nivel": "primaria_alta",
+      "esperado": "primaria_alta",
+      "acierta": true,
+      "nivelEscalaClasica": "basicos",
+      "silabasPorPalabra": 2.079,
+      "palabrasPorOracion": 10.26
+    },
+    {
+      "archivo": "mineduc_mi_libro_de_lecturas_4to_grado.txt",
+      "grado": "4to_primaria",
+      "puntuacion": 74.93,
+      "nivel": "primaria_alta",
+      "esperado": "primaria_alta",
+      "acierta": true,
+      "nivelEscalaClasica": "basicos",
+      "silabasPorPalabra": 2.07,
+      "palabrasPorOracion": 7.59
+    },
+    {
+      "archivo": "mineduc_matematicas_4g.txt",
+      "grado": "4to_primaria",
+      "puntuacion": 88.79,
+      "nivel": "primaria_baja",
+      "esperado": "primaria_alta",
+      "acierta": false,
+      "nivelEscalaClasica": "primaria_alta",
+      "silabasPorPalabra": 1.889,
+      "palabrasPorOracion": 4.62
+    },
+    {
+      "archivo": "mineduc_ciencias_naturales_y_tecnologia_5to.txt",
+      "grado": "5to_primaria",
+      "puntuacion": 61.79,
+      "nivel": "primaria_alta",
+      "esperado": "primaria_alta",
+      "acierta": true,
+      "nivelEscalaClasica": "basicos",
+      "silabasPorPalabra": 2.191,
+      "palabrasPorOracion": 13.32
+    },
+    {
+      "archivo": "mineduc_ciencias_sociales_5to.txt",
+      "grado": "5to_primaria",
+      "puntuacion": 61.82,
+      "nivel": "primaria_alta",
+      "esperado": "primaria_alta",
+      "acierta": true,
+      "nivelEscalaClasica": "basicos",
+      "silabasPorPalabra": 2.193,
+      "palabrasPorOracion": 13.19
+    },
+    {
+      "archivo": "mineduc_comunicacion_y_lenguaje_5do.txt",
+      "grado": "5to_primaria",
+      "puntuacion": 70.84,
+      "nivel": "primaria_alta",
+      "esperado": "primaria_alta",
+      "acierta": true,
+      "nivelEscalaClasica": "basicos",
+      "silabasPorPalabra": 2.097,
+      "palabrasPorOracion": 9.96
+    },
+    {
+      "archivo": "mineduc_mi_libro_de_lecturas_5to_grado.txt",
+      "grado": "5to_primaria",
+      "puntuacion": 71.73,
+      "nivel": "primaria_alta",
+      "esperado": "primaria_alta",
+      "acierta": true,
+      "nivelEscalaClasica": "basicos",
+      "silabasPorPalabra": 2.1,
+      "palabrasPorOracion": 8.9
+    },
+    {
+      "archivo": "mineduc_matematicas_5g.txt",
+      "grado": "5to_primaria",
+      "puntuacion": 87.76,
+      "nivel": "primaria_baja",
+      "esperado": "primaria_alta",
+      "acierta": false,
+      "nivelEscalaClasica": "primaria_alta",
+      "silabasPorPalabra": 1.899,
+      "palabrasPorOracion": 5.03
+    },
+    {
+      "archivo": "mineduc_ciencias_naturales_y_tecnologia_6to.txt",
+      "grado": "6to_primaria",
+      "puntuacion": 62.76,
+      "nivel": "primaria_alta",
+      "esperado": "primaria_alta",
+      "acierta": true,
+      "nivelEscalaClasica": "basicos",
+      "silabasPorPalabra": 2.189,
+      "palabrasPorOracion": 12.47
+    },
+    {
+      "archivo": "mineduc_ciencias_sociales_6to.txt",
+      "grado": "6to_primaria",
+      "puntuacion": 62.57,
+      "nivel": "primaria_alta",
+      "esperado": "primaria_alta",
+      "acierta": true,
+      "nivelEscalaClasica": "basicos",
+      "silabasPorPalabra": 2.167,
+      "palabrasPorOracion": 14.0
+    },
+    {
+      "archivo": "mineduc_comunicacion_y_lenguaje_6do.txt",
+      "grado": "6to_primaria",
+      "puntuacion": 68.71,
+      "nivel": "primaria_alta",
+      "esperado": "primaria_alta",
+      "acierta": true,
+      "nivelEscalaClasica": "basicos",
+      "silabasPorPalabra": 2.12,
+      "palabrasPorOracion": 10.71
+    },
+    {
+      "archivo": "mineduc_mi_libro_de_lecturas_6to_grado.txt",
+      "grado": "6to_primaria",
+      "puntuacion": 73.78,
+      "nivel": "primaria_alta",
+      "esperado": "primaria_alta",
+      "acierta": true,
+      "nivelEscalaClasica": "basicos",
+      "silabasPorPalabra": 2.065,
+      "palabrasPorOracion": 9.01
+    },
+    {
+      "archivo": "mineduc_matematicas_6g.txt",
+      "grado": "6to_primaria",
+      "puntuacion": 83.02,
+      "nivel": "primaria_baja",
+      "esperado": "primaria_alta",
+      "acierta": false,
+      "nivelEscalaClasica": "primaria_alta",
+      "silabasPorPalabra": 1.938,
+      "palabrasPorOracion": 7.37
+    }
+  ]
+}

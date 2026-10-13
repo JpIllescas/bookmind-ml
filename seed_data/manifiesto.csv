@@ -1,1 +1,35 @@
 archivo,materia,grado,fuente
+mineduc_leo_y_escribo_paso_1.txt,comunicacion_lenguaje,1ro_primaria,mineduc.edu.gt/tmp-libros/leo_y_escribo_paso_1_compressed.pdf
+mineduc_leo_y_escribo_paso_2.txt,comunicacion_lenguaje,1ro_primaria,mineduc.edu.gt/tmp-libros/leo_y_escribo_paso_2_compressed.pdf
+mineduc_mi_libro_de_lecturas_1er_grado.txt,comunicacion_lenguaje,1ro_primaria,mineduc.edu.gt/tmp-libros/mi_libro_de_lecturas_1er_grado_compressed.pdf
+mineduc_matematicas_1g.txt,matematicas,1ro_primaria,mineduc.edu.gt/tmp-libros/matematicas_1G_compressed.pdf
+mineduc_guia_metodologica_matematicas.txt,matematicas,segundo_ciclo_primaria,mineduc.edu.gt/tmp-libros/guia_metodologica_matematicas_compressed.pdf
+mineduc_comunicacion_y_lenguaje_2do.txt,comunicacion_lenguaje,2do_primaria,mineduc.edu.gt/tmp-libros/comunicacion_y_lenguaje_2do_compressed.pdf
+mineduc_mi_libro_de_lecturas_2do_grado.txt,comunicacion_lenguaje,2do_primaria,mineduc.edu.gt/tmp-libros/mi_libro_de_lecturas_2do_grado_compressed.pdf
+mineduc_matematicas_2g.txt,matematicas,2do_primaria,mineduc.edu.gt/tmp-libros/matematicas_2G_compressed.pdf
+mineduc_comunicacion_y_lenguaje_3ro.txt,comunicacion_lenguaje,3ro_primaria,mineduc.edu.gt/tmp-libros/comunicacion_y_lenguaje_3ro_compressed.pdf
+mineduc_mi_libro_de_lecturas_3er_grado.txt,comunicacion_lenguaje,3ro_primaria,mineduc.edu.gt/tmp-libros/mi_libro_de_lecturas_3er_grado_compressed.pdf
+mineduc_matematicas_3g.txt,matematicas,3ro_primaria,mineduc.edu.gt/tmp-libros/matematicas_3G_compressed.pdf
+mineduc_ciencias_naturales_y_tecnologia_4to.txt,ciencias_naturales,4to_primaria,mineduc.edu.gt/tmp-libros/ciencias_naturales_y_tecnologia_4to_compressed.pdf
+mineduc_ciencias_sociales_4to.txt,ciencias_sociales,4to_primaria,mineduc.edu.gt/tmp-libros/ciencias_sociales_4to_compressed.pdf
+mineduc_comunicacion_y_lenguaje_4do.txt,comunicacion_lenguaje,4to_primaria,mineduc.edu.gt/tmp-libros/comunicacion_y_lenguaje_4do_compressed.pdf
+mineduc_mi_libro_de_lecturas_4to_grado.txt,comunicacion_lenguaje,4to_primaria,mineduc.edu.gt/tmp-libros/mi_libro_de_lecturas_4to_grado_compressed.pdf
+mineduc_matematicas_4g.txt,matematicas,4to_primaria,mineduc.edu.gt/tmp-libros/matematicas_4G_compressed.pdf
+mineduc_ciencias_naturales_y_tecnologia_5to.txt,ciencias_naturales,5to_primaria,mineduc.edu.gt/tmp-libros/ciencias_naturales_y_tecnologia_5to_compressed.pdf
+mineduc_ciencias_sociales_5to.txt,ciencias_sociales,5to_primaria,mineduc.edu.gt/tmp-libros/ciencias_sociales_5to_compressed.pdf
+mineduc_comunicacion_y_lenguaje_5do.txt,comunicacion_lenguaje,5to_primaria,mineduc.edu.gt/tmp-libros/comunicacion_y_lenguaje_5do_compressed.pdf
+mineduc_mi_libro_de_lecturas_5to_grado.txt,comunicacion_lenguaje,5to_primaria,mineduc.edu.gt/tmp-libros/mi_libro_de_lecturas_5to_grado_compressed.pdf
+mineduc_matematicas_5g.txt,matematicas,5to_primaria,mineduc.edu.gt/tmp-libros/matematicas_5G_compressed.pdf
+mineduc_ciencias_naturales_y_tecnologia_6to.txt,ciencias_naturales,6to_primaria,mineduc.edu.gt/tmp-libros/ciencias_naturales_y_tecnologia_6to_compressed.pdf
+mineduc_ciencias_sociales_6to.txt,ciencias_sociales,6to_primaria,mineduc.edu.gt/tmp-libros/ciencias_sociales_6to_compressed.pdf
+mineduc_comunicacion_y_lenguaje_6do.txt,comunicacion_lenguaje,6to_primaria,mineduc.edu.gt/tmp-libros/comunicacion_y_lenguaje_6do_compressed.pdf
+mineduc_mi_libro_de_lecturas_6to_grado.txt,comunicacion_lenguaje,6to_primaria,mineduc.edu.gt/tmp-libros/mi_libro_de_lecturas_6to_grado_compressed.pdf
+mineduc_matematicas_6g.txt,matematicas,6to_primaria,mineduc.edu.gt/tmp-libros/matematicas_6G_compressed.pdf
+mineduc_guia_didactica_sugerencias_para_celebrar_las_fiestas_patrias.txt,ciencias_sociales,primaria,mineduc.edu.gt/tmp-libros/GU%C3%8DA%20DID%C3%81CTICA%20SUGERENCIAS%20PARA%20CELEBRAR%20LAS%20FIESTAS%20PATRIAS.pdf
+# mineduc_material_manipulable_g2.txt excluido: piezas para recortar, no texto de estudio
+# mineduc_medio_social_y_natural_2do.txt excluido: área integrada (sociales + naturales): no tiene una sola etiqueta correcta
+# mineduc_material_manipulable_g3.txt excluido: piezas para recortar, no texto de estudio
+# mineduc_medio_social_y_natural_3ro.txt excluido: área integrada (sociales + naturales): no tiene una sola etiqueta correcta
+# mineduc_material_manipulable_g4.txt excluido: piezas para recortar, no texto de estudio
+# mineduc_material_manipulable_g5.txt excluido: piezas para recortar, no texto de estudio
+# mineduc_material_manipulable_g6.txt excluido: piezas para recortar, no texto de estudio

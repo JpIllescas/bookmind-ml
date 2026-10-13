@@ -5,8 +5,9 @@ fastapi>=0.121.0
 uvicorn[standard]>=0.42.0
 pydantic>=2.13.0
 
-scikit-learn>=1.9.0
-numpy>=2.5.0
+# Fijadas: el .joblib versionado se serializo con estas; otra version da InconsistentVersionWarning.
+scikit-learn==1.9.0
+numpy==2.5.1
 scipy>=1.18.0
 joblib>=1.5.0
 

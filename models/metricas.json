@@ -1,0 +1,88 @@
+{
+  "generado_en": "2026-10-11T05:25:04.506512+00:00",
+  "accuracy": 1.0,
+  "accuracy_baseline_clase_mayoritaria": 0.42857142857142855,
+  "mejora_sobre_baseline": 0.5714,
+  "f1_macro": 1.0,
+  "cv_accuracy_media": 1.0,
+  "cv_accuracy_desviacion": 0.0,
+  "n_entrenamiento": 20,
+  "n_test": 7,
+  "distribucion_por_clase": {
+    "matematicas": 7,
+    "ciencias_naturales": 3,
+    "ciencias_sociales": 4,
+    "comunicacion_lenguaje": 13
+  },
+  "etiquetas": [
+    "ciencias_naturales",
+    "ciencias_sociales",
+    "comunicacion_lenguaje",
+    "matematicas"
+  ],
+  "matriz_confusion": [
+    [
+      1,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      3,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      2
+    ]
+  ],
+  "reporte_por_clase": {
+    "ciencias_naturales": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 1.0
+    },
+    "ciencias_sociales": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 1.0
+    },
+    "comunicacion_lenguaje": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 3.0
+    },
+    "matematicas": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 2.0
+    },
+    "accuracy": 1.0,
+    "macro avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 7.0
+    },
+    "weighted avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 7.0
+    }
+  }
+}
