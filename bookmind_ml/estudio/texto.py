@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import math
 import re
 import unicodedata
+from collections import Counter
 from dataclasses import dataclass
 from typing import Any
 
@@ -58,9 +60,24 @@ _RE_PRIMERA_SEGUNDA = re.compile(
 _RE_ACTIVIDAD = re.compile(
     r"\b(en (mi|el|tu|su) cuaderno|"
     r"(observ|copi|dibuj|coment|convers|investig|identific|complet|recort|pint|elabor|subray|anot|realiz|"
-    r"pregunt|organiz|compar|explic|clasific|dialog|reflexion)(o|amos)|"
-    r"(escrib|describ)(o|imos)|(respond|le)(o|emos)|peg(o|amos))\b"
+    r"pregunt|organiz|compar|explic|clasific|dialog|reflexion|solicit|marc|busc|dibuj)(o|amos)|"
+    r"(escrib|describ)(o|imos)|(respond|le|hac)(o|emos)|peg(o|amos)|"
+    # Instrucciones de juegos de los libros escolares.
+    r"el juego consiste|(lanz|tir)(ar|a|an) el dado|su turno|por turnos|gana (quien|el que)|participantes?|"
+    r"con el apoyo del maestro|cada uno marca)\b"
 )
+# Rotulos de ficha escolar: lo que sigue es material de trabajo, no explicacion.
+_RE_ROTULO_DE_FICHA = re.compile(r"\b(palabras clave|materiales|instrucciones|procedimiento|hip[oó]tesis)\s*:", re.IGNORECASE)
+# Secciones del libro escolar pegadas a la oracion siguiente ("Larios INGUAT Nota de interes En 2008...").
+_RE_ROTULO_DE_SECCION = re.compile(
+    r"\b(?:Relaciono|Relacionamos|Investigo|Investigamos|Organizo|Organizamos|Taller|Nota de inter[eé]s|"
+    r"Actividades adicionales|Evaluaci[oó]n del? proyecto)\b(?=\s+[A-ZÁÉÍÓÚÑ¿¡\d])"
+)
+# Consigna en "nosotros" al empezar ("Formamos equipos...") o en futuro ("anotaremos"), y codigos de estandar "(CS 4)".
+_RE_CONSIGNA_NOSOTROS = re.compile(r"^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(amos|emos|imos)\b|\b\w+(aremos|eremos|iremos)\b")
+_RE_ESTANDAR = re.compile(r"\(\s*[A-Z]{1,3}\s*\d+\s*\)|^Est[aá]ndar\s+\d|\b[Ee]l maestro o (la )?maestra\b")
+# Folios o numeros de actividad que quedan delante de la oracion: "6 2 La agricultura es...".
+_RE_NUMEROS_INICIALES = re.compile(r"^(?:\d{1,3}\s+)+(?=[A-ZÁÉÍÓÚÑ¿¡])")
 # Una cabecera de pagina pegada a la oracion: "MICHEL FOUCAULT: LA ESCALOMETRIA ... Michel Foucault fue..."
 MIN_PALABRAS_TITULO = 2
 
@@ -74,8 +91,16 @@ def en_primera_o_segunda_persona(texto: str) -> bool:
 
 
 def es_actividad(texto: str) -> bool:
-    """Consignas para el estudiante y listas con viñetas: no explican el tema."""
-    return "•" in texto or _RE_ACTIVIDAD.search(normalizar(texto)) is not None
+    """Consignas, juegos, fichas de trabajo y listas con viñetas: no explican el tema."""
+    return (
+        "•" in texto
+        # Una pregunta se la hace el libro al estudiante: no explica nada.
+        or "¿" in texto
+        or _RE_CONSIGNA_NOSOTROS.search(texto) is not None
+        or _RE_ESTANDAR.search(texto) is not None
+        or _RE_ROTULO_DE_FICHA.search(texto) is not None
+        or _RE_ACTIVIDAD.search(normalizar(texto)) is not None
+    )
 
 
 def _palabra_en_mayusculas(palabra: str) -> bool:
@@ -98,6 +123,106 @@ def es_mayusculas(texto: str) -> bool:
     """Titulos y portadas: casi todas las letras en mayuscula."""
     letras = [c for c in texto if c.isalpha()]
     return len(letras) >= 6 and sum(c.isupper() for c in letras) / len(letras) >= 0.6
+
+
+# Cabeceras y pies que el libro repite en cada pagina ("9 Guia para docentes de Seminario - Etapa I...").
+MIN_PALABRAS_CABECERA = 3
+MAX_PALABRAS_CABECERA = 16
+FRACCION_CABECERA = 0.3
+MIN_PAGINAS_CABECERA = 3
+CASI_TODAS = 0.9
+# Una cabecera es poco texto dentro de una pagina con contenido: asi no se confunde con oraciones calcadas.
+MIN_PALABRAS_PAGINA = 30
+MAX_PESO_CABECERA = 0.25
+
+
+def _es_folio(palabra: str) -> bool:
+    return palabra.strip(".-–—·").isdigit()
+
+
+def _hasta_el_folio(palabras_pagina: list[str]) -> list[str]:
+    """El borde de la pagina sin el folio del extremo y hasta el siguiente: el folio separa cabecera y contenido."""
+    salida: list[str] = []
+    for palabra in palabras_pagina:
+        if _es_folio(palabra):
+            if salida:
+                break
+            continue
+        salida.append(normalizar(palabra))
+    return salida
+
+
+def _repetida(bordes: list[list[str]]) -> list[str]:
+    """La frase del borde (inicio o final) que se repite en mas paginas y, entre esas, la mas larga."""
+    if len(bordes) < MIN_PAGINAS_CABECERA:
+        return []
+    conteo: Counter[tuple[str, ...]] = Counter()
+    for borde in bordes:
+        for largo in range(MIN_PALABRAS_CABECERA, min(MAX_PALABRAS_CABECERA, len(borde)) + 1):
+            conteo[tuple(borde[:largo])] += 1
+    minimo = max(MIN_PAGINAS_CABECERA, math.ceil(len(bordes) * FRACCION_CABECERA))
+    frecuentes = [(veces, frase) for frase, veces in conteo.items() if veces >= minimo]
+    if not frecuentes:
+        return []
+    # Solo por largo ganaria "cabecera + la primera palabra de algunas paginas".
+    tope = max(veces for veces, _ in frecuentes)
+    return list(max((len(frase), veces, frase) for veces, frase in frecuentes if veces >= tope * CASI_TODAS)[2])
+
+
+def _palabras_a_quitar(palabras_pagina: list[str], quitar: list[str]) -> int:
+    """Cuantas palabras ocupa la cabecera al inicio (con sus folios intercalados); 0 si no empieza por ella."""
+    consumidas = 0
+    for i, palabra in enumerate(palabras_pagina):
+        # Terminada la frase, el folio pegado a ella tambien se va.
+        if consumidas == len(quitar) and not _es_folio(palabra):
+            return i
+        if _es_folio(palabra):
+            continue
+        if normalizar(palabra) != quitar[consumidas]:
+            return 0
+        consumidas += 1
+    return len(palabras_pagina) if consumidas == len(quitar) else 0
+
+
+def _sin_primeras(texto: str, cuantas: int) -> str:
+    # Se corta sobre el texto original: los saltos de linea separan oraciones y no deben perderse.
+    if not cuantas:
+        return texto
+    tramos = list(re.finditer(r"\S+", texto))
+    return texto[tramos[cuantas].start():] if cuantas < len(tramos) else ""
+
+
+def _sin_ultimas(texto: str, cuantas: int) -> str:
+    if not cuantas:
+        return texto
+    tramos = list(re.finditer(r"\S+", texto))
+    return texto[:tramos[-cuantas - 1].end()] if cuantas < len(tramos) else ""
+
+
+def _quitar_borde(textos: list[str], final: bool) -> list[str]:
+    def palabras_de(texto: str) -> list[str]:
+        partes = texto.split()
+        return list(reversed(partes)) if final else partes
+
+    # Se detecta solo en paginas con contenido y mirando su primera cuarta parte; se quita de todas.
+    con_contenido = [palabras_de(t) for t in textos if len(t.split()) >= MIN_PALABRAS_PAGINA]
+    frase = _repetida([_hasta_el_folio(p[:min(MAX_PALABRAS_CABECERA * 2, int(len(p) * MAX_PESO_CABECERA))]) for p in con_contenido])
+    if not frase:
+        return textos
+
+    salida = []
+    for texto in textos:
+        partes = palabras_de(texto)
+        cuantas = _palabras_a_quitar(partes, frase)
+        salida.append(_sin_ultimas(texto, cuantas) if final else _sin_primeras(texto, cuantas))
+    return salida
+
+
+def sin_cabeceras_repetidas(paginas: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Quita la cabecera y el pie que el libro repite en muchas paginas, con su numero de pagina."""
+    textos = [str(p.get("texto") or "") for p in paginas]
+    textos = _quitar_borde(_quitar_borde(textos, final=False), final=True)
+    return [{**p, "texto": t} for p, t in zip(paginas, textos)]
 
 
 @dataclass(frozen=True)
@@ -132,9 +257,10 @@ def segmentar(paginas: list[dict[str, Any]]) -> list[Oracion]:
     vistas: set[str] = set()
     orden = 0
 
-    for pagina in sorted(paginas, key=lambda p: int(p.get("pagina", 0))):
-        for trozo in _RE_LIMITE.split(str(pagina.get("texto") or "")):
-            texto = " ".join(trozo.split()).strip(" \t-–—•·")
+    for pagina in sin_cabeceras_repetidas(sorted(paginas, key=lambda p: int(p.get("pagina", 0)))):
+        texto_pagina = _RE_ROTULO_DE_SECCION.sub("\n", str(pagina.get("texto") or ""))
+        for trozo in _RE_LIMITE.split(texto_pagina):
+            texto = _RE_NUMEROS_INICIALES.sub("", " ".join(trozo.split()).strip(" \t-–—•·"))
             # El encabezado de capitulo se pega a la primera oracion del capitulo.
             texto = sin_titulo_inicial(_RE_ENCABEZADO.sub("", texto))
             cuantas = len(palabras(texto))
