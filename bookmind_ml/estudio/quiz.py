@@ -10,7 +10,7 @@ import numpy as np
 from .conceptos import extraer_conceptos
 from .flashcards import _oracion_para_cloze
 from .resumen import vectorizar
-from .texto import contiene, ocultar
+from .texto import Oracion, contiene, ocultar
 
 OPCIONES = 4
 # Distractores con similitud en esta banda: del mismo tema, pero no sinonimos.
@@ -74,6 +74,11 @@ def _recortar(texto: str, maximo: int = 140) -> str:
     return texto[:maximo].rsplit(" ", 1)[0] + "…"
 
 
+def _alrededor(oracion: Oracion, paginas: list[dict[str, Any]]) -> str:
+    """La pagina del hueco: lo que rodea la frase en el libro, aunque haya replicas cortas de por medio."""
+    return " ".join(str(p.get("texto") or "") for p in paginas if int(p.get("pagina", 0)) == oracion.pagina)
+
+
 def generar_quiz(paginas: list[dict[str, Any]], cantidad: int = 5) -> list[dict[str, Any]]:
     # Se piden mas conceptos que preguntas: hacen falta para los distractores.
     conceptos = extraer_conceptos(paginas, max(cantidad * 3, 12))
@@ -119,10 +124,17 @@ def generar_quiz(paginas: list[dict[str, Any]], cantidad: int = 5) -> list[dict[
             continue
 
         usadas.add(oracion.texto)
+        # "Mi _____ no es interesante" con "planeta" de opción, si la oración anterior habla de su planeta,
+        # tiene dos respuestas: un término que se lee junto al hueco no sirve de distractor.
+        alrededor = _alrededor(oracion, paginas)
+        distractores = [
+            d for d in _distractores(indice, similitud, terminos, len(terminos))
+            if not contiene(alrededor, d)
+        ]
         pregunta = _armar(
             f"¿Qué palabra completa la frase? «{ocultar(oracion.texto, concepto.termino)}»",
             concepto.termino,
-            _distractores(indice, similitud, terminos, OPCIONES - 1),
+            distractores,
             oracion.pagina,
         )
         if pregunta:

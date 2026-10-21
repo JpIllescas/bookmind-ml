@@ -137,7 +137,8 @@ def resumir(paginas: list[dict[str, Any]], cantidad: int = 8) -> list[dict[str, 
     # Import tardio: conceptos usa oraciones_centrales para elegir contextos.
     from .conceptos import extraer_conceptos
 
-    oraciones = segmentar(paginas)
+    # "…y después de un silencio me dijo:" anuncia lo que sigue: como punto del resumen queda colgado.
+    oraciones = [o for o in segmentar(paginas) if not o.texto.rstrip().endswith(":")]
     terminos = [c.termino for c in extraer_conceptos(paginas, TERMINOS_PARA_RESUMEN)]
 
     return [

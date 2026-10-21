@@ -251,6 +251,41 @@ def tokens(texto: str) -> list[str]:
     ]
 
 
+# Igual que el chat del backend (esLegible): piezas reconocibles y, de ellas, al menos la mitad palabras.
+MINIMO_LEGIBLE = 0.85
+MINIMO_PALABRAS_LEGIBLE = 0.5
+_RE_BORDES = re.compile(r"^[^\w]+|[^\w]+$")
+_RE_PALABRA_LEGIBLE = re.compile(r"^[^\W\d_]+(?:[-'’][^\W\d_]+)*$")
+_RE_NUMERO = re.compile(r"^\d+(?:[.,]\d+)*%?$")
+
+
+def es_legible(texto: str) -> bool:
+    """El OCR de una pagina mala deja "LUSAR ESTOS f TRAJES / Eú": eso no se ensena como si fuera el libro."""
+    piezas = [p for p in (_RE_BORDES.sub("", pieza) for pieza in texto.split()) if p]
+    if not piezas:
+        return False
+    palabras_ = sum(
+        1 for p in piezas
+        if _RE_PALABRA_LEGIBLE.match(p)
+        # Solo "a", "e", "o", "u" e "y" son palabras de una letra; las demas, sin vocal, son ruido.
+        and (p.lower() in "aeouy" if len(p) == 1 else re.search(r"[aeiouáéíóúüy]", p, re.IGNORECASE))
+    )
+    numeros = sum(1 for p in piezas if _RE_NUMERO.match(p))
+    return (palabras_ + numeros) / len(piezas) >= MINIMO_LEGIBLE and palabras_ / len(piezas) >= MINIMO_PALABRAS_LEGIBLE
+
+
+def _trozos(texto_pagina: str) -> list[str]:
+    """Los trozos de la pagina; la acotacion de un dialogo ("—volvio a preguntar el principito") sigue con su linea."""
+    trozos: list[str] = []
+    for trozo in _RE_LIMITE.split(texto_pagina):
+        limpio = trozo.strip(" \t-–—•·")
+        if trozos and trozo.lstrip()[:1] in "-–—" and limpio[:1].islower():
+            trozos[-1] = f"{trozos[-1].rstrip()} {trozo.strip()}"
+        else:
+            trozos.append(trozo)
+    return trozos
+
+
 def segmentar(paginas: list[dict[str, Any]]) -> list[Oracion]:
     """Parte el libro en oraciones con pagina, sin repetidas ni ruido de extraccion."""
     oraciones: list[Oracion] = []
@@ -259,7 +294,7 @@ def segmentar(paginas: list[dict[str, Any]]) -> list[Oracion]:
 
     for pagina in sin_cabeceras_repetidas(sorted(paginas, key=lambda p: int(p.get("pagina", 0)))):
         texto_pagina = _RE_ROTULO_DE_SECCION.sub("\n", str(pagina.get("texto") or ""))
-        for trozo in _RE_LIMITE.split(texto_pagina):
+        for trozo in _trozos(texto_pagina):
             texto = _RE_NUMEROS_INICIALES.sub("", " ".join(trozo.split()).strip(" \t-–—•·"))
             # El encabezado de capitulo se pega a la primera oracion del capitulo.
             texto = sin_titulo_inicial(_RE_ENCABEZADO.sub("", texto))
@@ -269,6 +304,8 @@ def segmentar(paginas: list[dict[str, Any]]) -> list[Oracion]:
                 continue
             # Ejes de graficas, tablas y folios: mas digitos que palabras.
             if len(_RE_DIGITO.findall(texto)) > cuantas:
+                continue
+            if not es_legible(texto):
                 continue
 
             clave = normalizar(texto)

@@ -15,6 +15,7 @@ from .texto import (
     es_actividad,
     es_dialogo,
     es_mayusculas,
+    normalizar,
     palabras,
     segmentar,
     tokens,
@@ -58,6 +59,13 @@ _PREDICADO_QUE_CLASIFICA = re.compile(
     r"^(el|la|lo|los|las|un|una|unos|unas|uno de|una de|aquel|aquella|aquello)\b", re.IGNORECASE
 )
 
+# Rotulos de los libros escolares ("Importante: los nombres no se repiten"): anuncian, no son un termino.
+_ROTULOS = frozenset("""
+importante nota recuerda recuerdo observa observo ejemplo ejemplos atencion actividad actividades pista consejo
+aprendo aprendemos glosario resumen conclusion conclusiones respuesta respuestas solucion pregunta preguntas
+reflexiono reflexionamos sabias que dato curioso para saber mas tarea instrucciones
+""".split())
+
 # "Materiales: un limón, ruda, tilo..." es una lista, no una definicion.
 _PATRON_DOS_PUNTOS = _PATRONES_DEFINICION[2]
 PALABRAS_POR_ELEMENTO_DE_LISTA = 3
@@ -77,6 +85,41 @@ class Concepto:
     # True si la definicion sale de un patron ("X es..."); si no, es la oracion mas central.
     es_definicion: bool
     oraciones: list[Oracion] = field(default_factory=list)
+    # Varias apariciones distintas: con ellas Gemini puede decir que es el termino, no solo citarlo.
+    contextos: list[Oracion] = field(default_factory=list)
+
+
+CONTEXTOS_POR_TERMINO = 4
+# Palabras del comienzo donde el termino suele ser el tema de la oracion y no un detalle.
+PALABRAS_DEL_COMIENZO = 6
+COMAS_DE_UNA_LISTA = 3
+
+
+def _explica(oracion: Oracion) -> bool:
+    """Narra o explica: no es dialogo, ni lista, ni consigna, ni un trozo que empieza a media oracion."""
+    texto = oracion.texto
+    return not (
+        es_dialogo(texto)
+        or en_primera_o_segunda_persona(texto)
+        or es_actividad(texto)
+        or texto[:1].islower()
+        or texto.count(",") >= COMAS_DE_UNA_LISTA
+    )
+
+
+def _contexto(apariciones: list[Oracion], termino: str) -> Oracion:
+    """Sin definicion, la oracion que mejor lo presenta: que explique y, si se puede, que lo tenga de tema."""
+    def de_tema(oracion: Oracion) -> bool:
+        return contiene(" ".join(palabras(oracion.texto)[:PALABRAS_DEL_COMIENZO]), termino)
+
+    for elegibles in (
+        [o for o in apariciones if _explica(o) and de_tema(o)],
+        [o for o in apariciones if _explica(o)],
+        apariciones,
+    ):
+        if elegibles:
+            return oraciones_centrales(elegibles, 1)[0]
+    return apariciones[0]
 
 
 def _candidatos(oraciones: list[Oracion]) -> tuple[Counter[str], dict[str, str]]:
@@ -137,7 +180,7 @@ def _definicion(oracion: str) -> tuple[str, str, bool] | None:
             continue
         if verbo in _VERBOS_SINGULARES and not _PREDICADO_QUE_CLASIFICA.match(resto):
             continue
-        if patron is _PATRON_DOS_PUNTOS and _es_lista(resto):
+        if patron is _PATRON_DOS_PUNTOS and (_es_lista(resto) or normalizar(termino) in _ROTULOS):
             continue
         # "En mi tierra" o "Y añadió" no son terminos: deben abrir y cerrar con palabra de contenido.
         partes = tokens(termino)
@@ -158,7 +201,7 @@ def extraer_conceptos(paginas: list[dict[str, Any]], cantidad: int = 12) -> list
 
     # Los multipalabra pesan mas: "sistema solar" dice mas que "sistema".
     ranking = sorted(
-        ((clave, veces) for clave, veces in frecuencia.items() if veces >= MIN_FRECUENCIA),
+        ((clave, veces) for clave, veces in frecuencia.items() if veces >= MIN_FRECUENCIA and clave not in _ROTULOS),
         key=lambda par: (par[1] * (1 + 0.5 * (par[0].count(" "))), par[0]),
         reverse=True,
     )
@@ -193,15 +236,21 @@ def extraer_conceptos(paginas: list[dict[str, Any]], cantidad: int = 12) -> list
         apariciones = [o for o in oraciones if contiene(o.texto, termino)]
         if clave not in definidos and len(apariciones) < MIN_FRECUENCIA:
             continue
+        # "Intercambio mi cuaderno con…": lo que el libro solo nombra en consignas o diálogos no es un concepto suyo.
+        if clave not in definidos and not any(_explica(o) for o in apariciones):
+            continue
 
         if clave in definidos:
             # Vino de un patron ("X es...", "X consiste en..."): la fuerza del verbo solo ordena.
             _, definicion, pagina, _ = definidos[clave]
             es_definicion = True
         else:
-            # Sin definicion: la oracion mas central entre las que lo nombran hace de contexto.
-            contexto = oraciones_centrales(apariciones, 1)[0]
+            contexto = _contexto(apariciones, termino)
             definicion, pagina, es_definicion = contexto.texto, contexto.pagina, False
+
+        # Las que explican van primero; MMR las elige distintas entre si.
+        explicativas = [o for o in apariciones if _explica(o)] or apariciones
+        contextos = oraciones_centrales(explicativas, CONTEXTOS_POR_TERMINO) if explicativas else []
 
         conceptos.append(
             Concepto(
@@ -211,6 +260,7 @@ def extraer_conceptos(paginas: list[dict[str, Any]], cantidad: int = 12) -> list
                 veces=max(len(apariciones), frecuencia.get(clave, 0)),
                 es_definicion=es_definicion,
                 oraciones=apariciones,
+                contextos=contextos,
             )
         )
         if len(conceptos) >= cantidad:
@@ -227,6 +277,7 @@ def glosario(paginas: list[dict[str, Any]], cantidad: int = 12) -> list[dict[str
             "pagina": c.pagina,
             "veces": c.veces,
             "esDefinicion": c.es_definicion,
+            "contextos": [{"texto": o.texto, "pagina": o.pagina} for o in c.contextos],
         }
         for c in extraer_conceptos(paginas, cantidad)
     ]
